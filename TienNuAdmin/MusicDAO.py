@@ -1,5 +1,5 @@
-from ConnectDB import Connect_DB
-from DTO.Music import Music
+import Connect_DB
+from Music import Music
 import mysql.connector
 
 def readData():

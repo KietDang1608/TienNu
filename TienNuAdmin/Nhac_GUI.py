@@ -2,7 +2,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 
-from BUS.NhacBUS import NhacBUS
+import NhacBUS
 class Nhac_GUI(QWidget):
         def __init__(self):
                 super().__init__()
