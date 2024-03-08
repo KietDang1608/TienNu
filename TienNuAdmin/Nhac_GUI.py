@@ -3,6 +3,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 
 import NhacBUS
+from Category_BUS import Category_BUS
 class Nhac_GUI(QWidget):
         def __init__(self):
                 super().__init__()
@@ -117,28 +118,28 @@ class Nhac_GUI(QWidget):
                 self.btnIMG.setGeometry(QtCore.QRect(280, 130, 31, 20))
                 self.btnIMG.setText("")
                 icon = QtGui.QIcon()
-                icon.addPixmap(QtGui.QPixmap("img/photo.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap("TienNuAdmin/img/photo.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnIMG.setIcon(icon)
                 self.btnIMG.setObjectName("btnIMG")
                 self.btnMusic = QtWidgets.QPushButton(parent=self.frame)
                 self.btnMusic.setGeometry(QtCore.QRect(280, 160, 31, 21))
                 self.btnMusic.setText("")
                 icon1 = QtGui.QIcon()
-                icon1.addPixmap(QtGui.QPixmap("img/music-notes.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon1.addPixmap(QtGui.QPixmap("TienNuAdmin/img/music-notes.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnMusic.setIcon(icon1)
                 self.btnMusic.setObjectName("btnMusic")
                 self.btnPlay = QtWidgets.QPushButton(parent=self.frame)
                 self.btnPlay.setGeometry(QtCore.QRect(20, 180, 31, 21))
                 self.btnPlay.setText("")
                 icon2 = QtGui.QIcon()
-                icon2.addPixmap(QtGui.QPixmap("img/play-button.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon2.addPixmap(QtGui.QPixmap("TienNuAdmin/img/play-button.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnPlay.setIcon(icon2)
                 self.btnPlay.setObjectName("btnPlay")
                 self.btnFind = QtWidgets.QPushButton(parent=self.frame)
                 self.btnFind.setGeometry(QtCore.QRect(600, 40, 21, 21))
                 self.btnFind.setText("")
                 icon3 = QtGui.QIcon()
-                icon3.addPixmap(QtGui.QPixmap("img/search.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon3.addPixmap(QtGui.QPixmap("TienNuAdmin/img/search.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnFind.setIcon(icon3)
                 self.btnFind.setObjectName("btnFind")
                 self.cbFind = QtWidgets.QComboBox(parent=self.frame)
@@ -153,36 +154,41 @@ class Nhac_GUI(QWidget):
                 self.addBtn.setGeometry(QtCore.QRect(450, 70, 171, 25))
                 self.addBtn.setStyleSheet("background-color: #ECB159;")
                 icon4 = QtGui.QIcon()
-                icon4.addPixmap(QtGui.QPixmap("img/plus.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon4.addPixmap(QtGui.QPixmap("TienNuAdmin/img/plus.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.addBtn.setIcon(icon4)
                 self.addBtn.setObjectName("addBtn")
                 self.updateBtn = QtWidgets.QPushButton(parent=self.frame)
                 self.updateBtn.setGeometry(QtCore.QRect(450, 100, 171, 25))
                 self.updateBtn.setStyleSheet("background-color: #ECB159;")
                 icon5 = QtGui.QIcon()
-                icon5.addPixmap(QtGui.QPixmap("img/system-update.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon5.addPixmap(QtGui.QPixmap("TienNuAdmin/img/system-update.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.updateBtn.setIcon(icon5)
                 self.updateBtn.setObjectName("updateBtn")
                 self.deleteBtn = QtWidgets.QPushButton(parent=self.frame)
                 self.deleteBtn.setGeometry(QtCore.QRect(450, 130, 171, 25))
                 self.deleteBtn.setStyleSheet("background-color: #ECB159;")
                 icon6 = QtGui.QIcon()
-                icon6.addPixmap(QtGui.QPixmap("img/delete.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon6.addPixmap(QtGui.QPixmap("TienNuAdmin/img/delete.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.deleteBtn.setIcon(icon6)
                 self.deleteBtn.setObjectName("deleteBtn")
                 self.refreshBtn = QtWidgets.QPushButton(parent=self.frame)
                 self.refreshBtn.setGeometry(QtCore.QRect(450, 160, 171, 25))
                 self.refreshBtn.setStyleSheet("background-color: #ECB159;")
                 icon7 = QtGui.QIcon()
-                icon7.addPixmap(QtGui.QPixmap("img/loading-arrow.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon7.addPixmap(QtGui.QPixmap("TienNuAdmin/img/loading-arrow.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.refreshBtn.setIcon(icon7)
                 self.refreshBtn.setObjectName("refreshBtn")
 
                 self.retranslateUi()
+                #----------Khoa textline
+                self.txtimg.setReadOnly(True)
+                self.txtmp3.setReadOnly(True)
                 
                 #---------------------------------------
-                self.addDataToTable()
-
+                musicBus = NhacBUS.NhacBUS()
+                
+                self.addDataToTable(musicBus.getData())
+                self.table.itemClicked.connect(self.setDataClicked)
         
         def retranslateUi(self):
                 self.label.setText( "ID :")
@@ -196,21 +202,43 @@ class Nhac_GUI(QWidget):
                 self.updateBtn.setText("UPDATE")
                 self.deleteBtn.setText( "DELETE")
                 self.refreshBtn.setText( "REFRESH")
-        def addDataToTable(self):
+        def addDataToTable(self, lstMusic:list):
+                
+                #Reset lai cb truong hop co du lieu category moi
+                self.setCBItems()
+                
                 self.table.setColumnCount(6)
-                lstHead = ["ID", "CategoryID", "Name", "Artist", "Img source","MP3 source"]
-                self.table.setHorizontalHeader(lstHead)
-                bus = NhacBUS()
-                row_count = len(bus.getData());
+                lstHead = ['ID', 'CategoryID', 'Name', 'Artist', 'Imgsource','MP3_source']
+                self.table.setHorizontalHeaderLabels(lstHead)
+               
+                #bus = NhacBUS.NhacBUS()
+                row_count = len(lstMusic);
                 self.table.setRowCount(row_count)
                 row = 0;
-                for music in  bus.getData():
-                        self.table.setItem(row, 0,str(music.id))
-                        self.table.setItem(row, 1,str(music.catID))
-                        self.table.setItem(row, 2,str(music.name))
-                        self.table.setItem(row, 3,str(music.artist))
-                        self.table.setItem(row, 4,str(music.img))
-                        self.table.setItem(row, 5,str(music.mp3))
+                for music in  lstMusic:
+                        self.table.setItem(row, 0,QTableWidgetItem(str(music.id)))
+                        self.table.setItem(row, 1,QTableWidgetItem(str(music.catID)))
+                        self.table.setItem(row, 2,QTableWidgetItem(str(music.name)))
+                        self.table.setItem(row, 3,QTableWidgetItem(str(music.artist)))
+                        self.table.setItem(row, 4,QTableWidgetItem(str(music.img)))
+                        self.table.setItem(row, 5,QTableWidgetItem(str(music.mp3)))
                         row += 1
                 
+        def setCBItems(self):
+                catBus = Category_BUS()
+                lstItems = []
+                for cat in catBus.getData():
+                        lstItems.append(cat.title)
                 
+                self.cbCate.addItems(lstItems)
+        def setDataClicked(self,item):
+                row = item.row()
+                
+                self.txtID.setText(self.table.item(row,0).text())
+                self.txtName.setText(self.table.item(row,2).text())
+                self.txtArtist.setText(self.table.item(row,3).text())
+                self.cbCate.setCurrentIndex(int(self.table.item(row,1).text())-1)
+                self.txtimg.setText(self.table.item(row,3).text())
+                self.txtmp3.setText(self.table.item(row,4).text())
+                
+                            

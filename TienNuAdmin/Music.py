@@ -6,6 +6,5 @@ class Music:
         self.artist = artist
         self.img = img
         self.mp3 = mp3
-        
     
         

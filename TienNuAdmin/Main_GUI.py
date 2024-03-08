@@ -9,7 +9,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 import sys
-import CategoryGUI
+import Category_GUI
 import UserGUI
 import FavGUI
 import PlaylistGUI
@@ -38,14 +38,14 @@ class Main_GUI(QMainWindow):
                 self.icon = QLabel(parent=self.leftMenuPn)
                 self.icon.setGeometry(QtCore.QRect(0, 0, 130, 130))
                 self.icon.setText("")
-                self.icon.setPixmap(QtGui.QPixmap("img/icon.png"))
+                self.icon.setPixmap(QtGui.QPixmap("TienNuAdmin\img\icon.png"))
                 self.icon.setObjectName("icon")
                 self.btnMusic = QPushButton(parent=self.leftMenuPn)
                 self.btnMusic.setGeometry(QtCore.QRect(10, 170, 110, 30))
                 self.btnMusic.setStyleSheet("background-color: #8785A2;\n"
         "color: #F6F6F6;")
                 icon = QtGui.QIcon()
-                icon.addPixmap(QtGui.QPixmap("img/music.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap("TienNuAdmin\img/music.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnMusic.setIcon(icon)
                 self.btnMusic.setObjectName("btnMusic")
                 self.btnCategory = QPushButton(parent=self.leftMenuPn)
@@ -53,7 +53,7 @@ class Main_GUI(QMainWindow):
                 self.btnCategory.setStyleSheet("background-color: #8785A2;\n"
         "color: #F6F6F6;")
                 icon1 = QtGui.QIcon()
-                icon1.addPixmap(QtGui.QPixmap("img/options.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon1.addPixmap(QtGui.QPixmap("TienNuAdmin\img/options.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnCategory.setIcon(icon1)
                 self.btnCategory.setObjectName("btnCategory")
                 self.btnUser = QPushButton(parent=self.leftMenuPn)
@@ -61,7 +61,7 @@ class Main_GUI(QMainWindow):
                 self.btnUser.setStyleSheet("background-color: #8785A2;\n"
         "color: #F6F6F6;")
                 icon2 = QtGui.QIcon()
-                icon2.addPixmap(QtGui.QPixmap("img/teamwork.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon2.addPixmap(QtGui.QPixmap("TienNuAdmin\img/teamwork.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnUser.setIcon(icon2)
                 self.btnUser.setObjectName("btnUser")
                 self.btnFavo = QPushButton(parent=self.leftMenuPn)
@@ -69,7 +69,7 @@ class Main_GUI(QMainWindow):
                 self.btnFavo.setStyleSheet("background-color: #8785A2;\n"
         "color: #F6F6F6;")
                 icon3 = QtGui.QIcon()
-                icon3.addPixmap(QtGui.QPixmap("img/favourite.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon3.addPixmap(QtGui.QPixmap("TienNuAdmin\img/favourite.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnFavo.setIcon(icon3)
                 self.btnFavo.setObjectName("btnFavo")
                 self.btnPlayList = QPushButton(parent=self.leftMenuPn)
@@ -77,7 +77,7 @@ class Main_GUI(QMainWindow):
                 self.btnPlayList.setStyleSheet("background-color: #8785A2;\n"
         "color: #F6F6F6;")
                 icon4 = QtGui.QIcon()
-                icon4.addPixmap(QtGui.QPixmap("img/playlist.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon4.addPixmap(QtGui.QPixmap("TienNuAdmin\img/playlist.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnPlayList.setIcon(icon4)
                 self.btnPlayList.setObjectName("btnPlayList")
                 self.titlePn = QFrame(parent=self.content)
@@ -110,7 +110,7 @@ class Main_GUI(QMainWindow):
                 self.musicGUI = Nhac_GUI.Nhac_GUI()
                 self.musicGUI.setObjectName("musicGUI")
                 self.pagesWidget.addWidget(self.musicGUI)
-                self.catGUI = CategoryGUI.CategoryGUI()
+                self.catGUI = Category_GUI.Category_GUI()
                 self.catGUI.setObjectName("catGUI")
                 self.pagesWidget.addWidget(self.catGUI)
                 self.usergui = UserGUI.UserGUI()
@@ -141,16 +141,21 @@ class Main_GUI(QMainWindow):
                 self.btnUser.setText( "Users")
                 self.btnFavo.setText( "Favorites")
                 self.btnPlayList.setText( "Playlist")
-                self.pageTitleLB.setText( "TextLabel")
+                self.pageTitleLB.setText( "MUSICS MANAGEMENT")
         def toMusic(self):
+                self.pageTitleLB.setText("MUSICS MANAGEMENT")
                 self.pagesWidget.setCurrentWidget(self.musicGUI)
         def toCat(self):
+                self.pageTitleLB.setText("CATEGORIES MANAGEMENT")
                 self.pagesWidget.setCurrentWidget(self.catGUI)
         def toUser(self):
+                self.pageTitleLB.setText("USERS MANAGEMENT")
                 self.pagesWidget.setCurrentWidget(self.usergui)
         def toFav(self):
+                self.pageTitleLB.setText("USER'S FAVOURITE SONGS MANAGEMENT")
                 self.pagesWidget.setCurrentWidget(self.favGUI)
         def toPlaylist(self):
+                self.pageTitleLB.setText("USER'S PLAYLISTS MANAGEMENT")
                 self.pagesWidget.setCurrentWidget(self.playGUI)
 
 if __name__ == "__main__":
