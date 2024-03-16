@@ -1,8 +1,10 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
-
+from PyQt6.QtGui import *
+import ImageResizer
 import NhacBUS
+import os
 from Category_BUS import Category_BUS
 class Nhac_GUI(QWidget):
         def __init__(self):
@@ -117,6 +119,7 @@ class Nhac_GUI(QWidget):
                 self.btnIMG = QtWidgets.QPushButton(parent=self.frame)
                 self.btnIMG.setGeometry(QtCore.QRect(280, 130, 31, 20))
                 self.btnIMG.setText("")
+                
                 icon = QtGui.QIcon()
                 icon.addPixmap(QtGui.QPixmap("TienNuAdmin/img/photo.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnIMG.setIcon(icon)
@@ -178,8 +181,21 @@ class Nhac_GUI(QWidget):
                 icon7.addPixmap(QtGui.QPixmap("TienNuAdmin/img/loading-arrow.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.refreshBtn.setIcon(icon7)
                 self.refreshBtn.setObjectName("refreshBtn")
-
+                #-----------------Dat item cho combobox
+                self.cbFind.addItem("ID")
+                self.cbFind.addItem("Songs name")
+                self.cbFind.addItem("Artist")
+                self.cbFind.addItem("Category")
+                
+                #-------------------------------------------------
+                #Dat lenh cho button
+                self.btnIMG.clicked.connect(self.chooseIMG)
                 self.retranslateUi()
+                
+                self.btnFind.clicked.connect(self.searchData)
+                
+                self.txtFind.returnPressed.connect(self.searchData)
+
                 #----------Khoa textline
                 self.txtimg.setReadOnly(True)
                 self.txtmp3.setReadOnly(True)
@@ -238,7 +254,48 @@ class Nhac_GUI(QWidget):
                 self.txtName.setText(self.table.item(row,2).text())
                 self.txtArtist.setText(self.table.item(row,3).text())
                 self.cbCate.setCurrentIndex(int(self.table.item(row,1).text())-1)
-                self.txtimg.setText(self.table.item(row,3).text())
-                self.txtmp3.setText(self.table.item(row,4).text())
+                self.txtimg.setText(self.table.item(row,4).text())
+                self.txtmp3.setText(self.table.item(row,5).text())
+                img = self.txtimg.text()
+                pixmap = QPixmap()
+                pixmap.loadFromData(ImageResizer.resizeImg(img,101,101))
+                self.imgLB.setPixmap(pixmap)
+        def chooseIMG(self):
+                file_path, _ = QFileDialog.getOpenFileName(self, "Select File")
                 
-                            
+                if file_path:
+                # Check if the file is located in the SongIMG folder
+                        folder_path = os.path.dirname(file_path)
+                        if folder_path.endswith("SongIMG"):
+                # Check if the selected file is an image file
+                                _, file_extension = os.path.splitext(file_path)
+                                if file_extension.lower() in ('.jpg', '.jpeg', '.png', '.gif', '.bmp','.jfif'):
+                    # Set selected file path to QLineEdit
+                                        self.txtimg.setText(os.path.basename(file_path))
+                                        img = self.txtimg.text()
+                                        pixmap = QPixmap()
+                                        pixmap.loadFromData(ImageResizer.resizeImg(img,101,101))
+                                        self.imgLB.setPixmap(pixmap)
+                                else:
+                    # Show message box alert for non-image file
+                                        QMessageBox.warning(self, "Warning", "Please select an image file.", QMessageBox.StandardButton.Ok)
+                        else:
+                # Show message box alert for file outside SongIMG folder
+                                QMessageBox.warning(self, "Warning", "Please select a file from the SongIMG folder.", QMessageBox.StandardButton.Ok)
+        def searchData(self):
+                item = self.cbFind.currentIndex()
+                data = self.txtFind.text()
+                lstFound = []
+                nhacbus = NhacBUS.NhacBUS()
+                if item == 0: #Tim theo id
+                        lstFound = nhacbus.findSongByID(data)
+                elif item == 3:#Tim theo the loai
+                        lstFound = nhacbus.findSongByCategoryID(data)
+                elif item == 1:#Tim theo ten nhac
+                        lstFound = nhacbus.findSongByName(data)
+                else:#Tim theo ten tac gia
+                        lstFound = nhacbus.findSongByArtist(data)
+                self.addDataToTable(lstFound)
+
+
+

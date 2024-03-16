@@ -1,21 +1,37 @@
-from flask import Flask, send_file
-import os
-app = Flask(__name__)
+import socket
 
-# Đường dẫn tới thư mục chứa các tệp nhạc
-MUSIC_DIRECTORY = "TienNuAdmin\\song\\"
+def main():
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_address = ('localhost', 3306)  # Change to your desired address and port
+    server_socket.bind(server_address)
+    server_socket.listen(5)
 
-@app.route("/song",methods=['GET'])
-def get_music():
-    # Xác định đường dẫn tuyệt đối của tệp nhạc
-    music_path = os.path.join(MUSIC_DIRECTORY, "test.mp3")
-    # Kiểm tra xem tệp nhạc có tồn tại không
-    if os.path.exists(music_path):
-        # Trả về tệp nhạc cho client
-        return send_file(music_path)
-    else:
-        # Trả về mã lỗi 404 nếu không tìm thấy tệp nhạc
-        return "File not found", 404
+    print("Server is listening on", server_address)
+
+    while True:
+        connection, client_address = server_socket.accept()
+        print("Connection from", client_address)
+
+        try:
+            # Receive the ID from the client
+            client_id = int(connection.recv(1024).decode())  # Convert to integer
+            if client_id == 2:
+                with open("C:\\Users\\KietDang\\Documents\\PYTHON\\TienNu\\TienNuAdmin\\song\\tabun.mp3", "rb") as music_file:
+                    data = music_file.read(1024)
+                    while data:
+                        connection.sendall(data)
+                        data = music_file.read(1024)
+            # Check if the ID matches the expected value
+            if client_id == 1:  # Change the expected ID as needed
+                # Load and send the audio file
+                with open("C:\\Users\\KietDang\\Documents\\PYTHON\\TienNu\\TienNuAdmin\\song\\test.mp3", "rb") as music_file:
+                    data = music_file.read(1024)
+                    while data:
+                        connection.sendall(data)
+                        data = music_file.read(1024)
+        finally:
+            connection.close()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    filename = "music.mp3"  # Default filename
+    main()

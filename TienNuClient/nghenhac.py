@@ -1,32 +1,43 @@
+import socket
+import tempfile
 import pygame
-import requests
-from io import BytesIO
 
-def play_music_from_server(server_url, filename):
-    # Gửi yêu cầu GET đến máy chủ để tải tệp nhạc
-    response = requests.get(f"{server_url}/song")
+def getMusic(id:int):
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_address = ('localhost', 3306)  # Change to match server address and port
 
-    # Kiểm tra xem yêu cầu có thành công không
-    if response.status_code == 200:
-        # Khởi tạo pygame
+    try:
+        client_socket.connect(server_address)
+
         pygame.init()
         pygame.mixer.init()
+        
+        client_socket.sendall(str(id).encode())
 
-        # Tạo buffer từ dữ liệu nhạc
-        music_buffer = BytesIO(response.content)
+        # Create a temporary file-like object to store the received audio data
+        temp_audio_file = tempfile.SpooledTemporaryFile(max_size=10000000)  # Adjust max_size as needed
 
-        # Phát nhạc từ buffer
-        pygame.mixer.music.load(music_buffer)
+        while True:
+            data = client_socket.recv(1024)
+            if not data:
+                break
+            temp_audio_file.write(data)
+
+        # Move the file pointer to the beginning of the temporary file
+        temp_audio_file.seek(0)
+
+        # Load the temporary file as music
+        pygame.mixer.music.load(temp_audio_file)
+
+        # Play the loaded music
         pygame.mixer.music.play()
 
-        # Đợi cho đến khi nhạc kết thúc
+        # Wait for the music to finish playing
         while pygame.mixer.music.get_busy():
             pygame.time.Clock().tick(10)
 
-    else:
-        print("Không thể tải bài hát từ máy chủ.")
+    finally:
+        client_socket.close()
 
-# Gọi hàm play_music_from_server với URL của máy chủ và tên tệp nhạc
-server_url = "http://192.168.1.3:5000"
-filename = "test.mp3"
-play_music_from_server(server_url, filename)
+if __name__ == "__main__":
+    getMusic(2)
