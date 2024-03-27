@@ -34,7 +34,9 @@ def readData():
                 print("Đã đóng kết nối")
     else:
         print("Không thể kết nối đến cơ sở dữ liệu.")
-def printData():
-    print(readData())
-def hello():
-    print("hello")
+def addData(music:Music):
+    connection = Connect_DB.getConnection()
+    if connection is not None:
+        cursor = connection.cursor()
+        sql = "INSERT INTO music VALUE()"
+        cursor.execute

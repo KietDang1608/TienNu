@@ -11,9 +11,9 @@ from PyQt6.QtWidgets import *
 import sys
 import Category_GUI
 import UserGUI
-import FavGUI
 import PlaylistGUI
 import Nhac_GUI
+import SlideGUI
 class Main_GUI(QMainWindow):
         def __init__(self):
                 super().__init__()
@@ -64,14 +64,14 @@ class Main_GUI(QMainWindow):
                 icon2.addPixmap(QtGui.QPixmap("TienNuAdmin\img/teamwork.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnUser.setIcon(icon2)
                 self.btnUser.setObjectName("btnUser")
-                self.btnFavo = QPushButton(parent=self.leftMenuPn)
-                self.btnFavo.setGeometry(QtCore.QRect(10, 320, 110, 30))
-                self.btnFavo.setStyleSheet("background-color: #8785A2;\n"
+                self.btnslide = QPushButton(parent=self.leftMenuPn)
+                self.btnslide.setGeometry(QtCore.QRect(10, 320, 110, 30))
+                self.btnslide.setStyleSheet("background-color: #8785A2;\n"
         "color: #F6F6F6;")
                 icon3 = QtGui.QIcon()
                 icon3.addPixmap(QtGui.QPixmap("TienNuAdmin\img/favourite.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-                self.btnFavo.setIcon(icon3)
-                self.btnFavo.setObjectName("btnFavo")
+                self.btnslide.setIcon(icon3)
+                self.btnslide.setObjectName("btnslide")
                 self.btnPlayList = QPushButton(parent=self.leftMenuPn)
                 self.btnPlayList.setGeometry(QtCore.QRect(10, 370, 110, 30))
                 self.btnPlayList.setStyleSheet("background-color: #8785A2;\n"
@@ -116,9 +116,9 @@ class Main_GUI(QMainWindow):
                 self.usergui = UserGUI.UserGUI()
                 self.usergui.setObjectName("usergui")
                 self.pagesWidget.addWidget(self.usergui)
-                self.favGUI = FavGUI.FavGUI()
-                self.favGUI.setObjectName("favGUI")
-                self.pagesWidget.addWidget(self.favGUI)
+                self.slideGUI = SlideGUI.SlideGUI()
+                self.slideGUI.setObjectName("slideGUI")
+                self.pagesWidget.addWidget(self.slideGUI)
                 self.playGUI = PlaylistGUI.PlaylistGUI()
                 self.playGUI.setObjectName("playGUI")
                 self.pagesWidget.addWidget(self.playGUI)
@@ -127,7 +127,7 @@ class Main_GUI(QMainWindow):
                 self.btnMusic.clicked.connect(self.toMusic)
                 self.btnCategory.clicked.connect(self.toCat)
                 self.btnUser.clicked.connect(self.toUser)
-                self.btnFavo.clicked.connect(self.toFav)
+                self.btnslide.clicked.connect(self.toSlide)
                 self.btnPlayList.clicked.connect(self.toPlaylist)
                 #--------------------------------------------
 
@@ -139,7 +139,7 @@ class Main_GUI(QMainWindow):
                 self.btnMusic.setText( "Music")
                 self.btnCategory.setText("Categories")
                 self.btnUser.setText( "Users")
-                self.btnFavo.setText( "Favorites")
+                self.btnslide.setText( "Slides")
                 self.btnPlayList.setText( "Playlist")
                 self.pageTitleLB.setText( "MUSICS MANAGEMENT")
         def toMusic(self):
@@ -151,12 +151,13 @@ class Main_GUI(QMainWindow):
         def toUser(self):
                 self.pageTitleLB.setText("USERS MANAGEMENT")
                 self.pagesWidget.setCurrentWidget(self.usergui)
-        def toFav(self):
-                self.pageTitleLB.setText("USER'S FAVOURITE SONGS MANAGEMENT")
-                self.pagesWidget.setCurrentWidget(self.favGUI)
+        def toSlide(self):
+                self.pageTitleLB.setText("SLIDE MANAGEMENT")
+                self.pagesWidget.setCurrentWidget(self.slideGUI)
         def toPlaylist(self):
                 self.pageTitleLB.setText("USER'S PLAYLISTS MANAGEMENT")
                 self.pagesWidget.setCurrentWidget(self.playGUI)
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

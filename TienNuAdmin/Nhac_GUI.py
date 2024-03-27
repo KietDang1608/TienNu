@@ -2,8 +2,10 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
+from Music import Music
 import ImageResizer
 import NhacBUS
+import pygame
 import os
 from Category_BUS import Category_BUS
 class Nhac_GUI(QWidget):
@@ -131,6 +133,7 @@ class Nhac_GUI(QWidget):
                 icon1.addPixmap(QtGui.QPixmap("TienNuAdmin/img/music-notes.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnMusic.setIcon(icon1)
                 self.btnMusic.setObjectName("btnMusic")
+                
                 self.btnPlay = QtWidgets.QPushButton(parent=self.frame)
                 self.btnPlay.setGeometry(QtCore.QRect(20, 180, 31, 21))
                 self.btnPlay.setText("")
@@ -138,6 +141,15 @@ class Nhac_GUI(QWidget):
                 icon2.addPixmap(QtGui.QPixmap("TienNuAdmin/img/play-button.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnPlay.setIcon(icon2)
                 self.btnPlay.setObjectName("btnPlay")
+                
+                self.btnStop = QtWidgets.QPushButton(parent=self.frame)
+                self.btnStop.setGeometry(QtCore.QRect(20, 180, 31, 21))
+                self.btnStop.setText("")
+                iconStop = QtGui.QIcon()
+                iconStop.addPixmap(QtGui.QPixmap("TienNuAdmin/img/stop-button.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                self.btnStop.setIcon(iconStop)
+                self.btnStop.setObjectName("btnStop")
+                self.btnStop.setVisible(False)
                 self.btnFind = QtWidgets.QPushButton(parent=self.frame)
                 self.btnFind.setGeometry(QtCore.QRect(600, 40, 21, 21))
                 self.btnFind.setText("")
@@ -195,7 +207,9 @@ class Nhac_GUI(QWidget):
                 self.btnFind.clicked.connect(self.searchData)
                 
                 self.txtFind.returnPressed.connect(self.searchData)
-
+                self.btnPlay.clicked.connect(self.playSong)
+                self.btnStop.clicked.connect(self.stopPlaySong)
+                self.btnMusic.clicked.connect(self.chooseSongFile)
                 #----------Khoa textline
                 self.txtimg.setReadOnly(True)
                 self.txtmp3.setReadOnly(True)
@@ -249,7 +263,7 @@ class Nhac_GUI(QWidget):
                 self.cbCate.addItems(lstItems)
         def setDataClicked(self,item):
                 row = item.row()
-                
+                self.btnStop.setVisible(False)
                 self.txtID.setText(self.table.item(row,0).text())
                 self.txtName.setText(self.table.item(row,2).text())
                 self.txtArtist.setText(self.table.item(row,3).text())
@@ -296,6 +310,41 @@ class Nhac_GUI(QWidget):
                 else:#Tim theo ten tac gia
                         lstFound = nhacbus.findSongByArtist(data)
                 self.addDataToTable(lstFound)
+        def playSong(self):
+                self.btnStop.setVisible(True)
+                pygame.mixer.init()
 
-
+                songPath = "TienNuAdmin/song/"+ self.txtmp3.text()
+                pygame.mixer.stop()
+                try:
+            # Load the song using pygame mixer
+                        song = pygame.mixer.Sound(songPath)
+                        song.play()
+                except Exception as e:
+                        QMessageBox.information(None, "Thông báo!", "Lỗi khi phát nhạc!")
+                        self.btnStop.setVisible(False)
+        def stopPlaySong(self):
+                self.btnStop.setVisible(False)
+                pygame.mixer.stop()
+        def chooseSongFile(self):
+                file_path, _ = QFileDialog.getOpenFileName(self, "Select File")
+                
+                if file_path:
+                # Check if the file is located in the SongIMG folder
+                        folder_path = os.path.dirname(file_path)
+                        if folder_path.endswith("song"):
+                # Check if the selected file is an image file
+                                _, file_extension = os.path.splitext(file_path)
+                                if file_extension.lower() in ('.mp3', '.wav'):
+                    # Set selected file path to QLineEdit
+                                        self.txtmp3.setText(os.path.basename(file_path))
+                                else:
+                    # Show message box alert for non-image file
+                                        QMessageBox.warning(self, "Warning", "Please select an MP3 or WAV file.", QMessageBox.StandardButton.Ok)
+                        else:
+                # Show message box alert for file outside SongIMG folder
+                                QMessageBox.warning(self, "Warning", "Please select a file from the song folder.", QMessageBox.StandardButton.Ok)             
+        def addSong(self):
+                song = Music()
+                
 

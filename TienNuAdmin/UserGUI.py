@@ -1,29 +1,155 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-import sys
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
-from PyQt6.QtCore import Qt
-import Config
-
+from UserBUS import UserBUS
 class UserGUI(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
+
     def initUI(self):
-        # Thiết lập kích thước và màu nền cho QWidget
-        content_frame = QFrame(self)
-        content_frame.setFrameShape(QFrame.Shape.Box)  # Đặt kiểu viền là Box
-        content_frame_layout = QVBoxLayout(content_frame)
+        self.resize(670, 550)
+        self.content = QtWidgets.QFrame(self)
+        self.content.setGeometry(QtCore.QRect(0, 0, 670, 550))
+        self.content.setStyleSheet("background-color: #F6F6F6;\n"
+"")
+        self.content.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.content.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.content.setObjectName("content")
+        self.scrollArea = QtWidgets.QScrollArea(parent=self.content)
+        self.scrollArea.setGeometry(QtCore.QRect(20, 250, 630, 300))
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 628, 298))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.table = QtWidgets.QTableWidget(parent=self.scrollAreaWidgetContents)
+        self.table.setGeometry(QtCore.QRect(0, 0, 630, 300))
+        self.table.setObjectName("table")
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.frame = QtWidgets.QFrame(parent=self.content)
+        self.frame.setGeometry(QtCore.QRect(20, 20, 630, 210))
+        self.frame.setStyleSheet("background-color:#FFE2E2 ;")
+        self.frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame.setObjectName("frame")
+        self.label = QtWidgets.QLabel(parent=self.frame)
+        self.label.setGeometry(QtCore.QRect(20, 10, 91, 16))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.label_3 = QtWidgets.QLabel(parent=self.frame)
+        self.label_3.setGeometry(QtCore.QRect(20, 40, 111, 16))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_3.setFont(font)
+        self.label_3.setObjectName("label_3")
+        self.label_4 = QtWidgets.QLabel(parent=self.frame)
+        self.label_4.setGeometry(QtCore.QRect(20, 70, 111, 16))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_4.setFont(font)
+        self.label_4.setObjectName("label_4")
+        self.label_5 = QtWidgets.QLabel(parent=self.frame)
+        self.label_5.setGeometry(QtCore.QRect(20, 100, 111, 16))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_5.setFont(font)
+        self.label_5.setObjectName("label_5")
+        self.txtUsername = QtWidgets.QLineEdit(parent=self.frame)
+        self.txtUsername.setGeometry(QtCore.QRect(130, 10, 150, 20))
+        self.txtUsername.setStyleSheet("background-color: #FFFFFF;\n"
+"")
+        self.txtUsername.setObjectName("txtUsername")
+        self.txtPassword = QtWidgets.QLineEdit(parent=self.frame)
+        self.txtPassword.setGeometry(QtCore.QRect(130, 40, 150, 20))
+        self.txtPassword.setStyleSheet("background-color: #FFFFFF;\n"
+"")
+        self.txtPassword.setObjectName("txtPassword")
+        self.txtName = QtWidgets.QLineEdit(parent=self.frame)
+        self.txtName.setGeometry(QtCore.QRect(130, 70, 150, 20))
+        self.txtName.setStyleSheet("background-color: #FFFFFF;\n"
+"")
+        self.txtName.setObjectName("txtName")
+        self.txtdate = QtWidgets.QLineEdit(parent=self.frame)
+        self.txtdate.setGeometry(QtCore.QRect(130, 100, 150, 20))
+        self.txtdate.setStyleSheet("background-color: #FFFFFF;\n"
+"")
+        self.txtdate.setObjectName("txtdate")
+        self.btnFind = QtWidgets.QPushButton(parent=self.frame)
+        self.btnFind.setGeometry(QtCore.QRect(600, 40, 21, 21))
+        self.btnFind.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../img/search.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.btnFind.setIcon(icon)
+        self.btnFind.setObjectName("btnFind")
+        self.cbFind = QtWidgets.QComboBox(parent=self.frame)
+        self.cbFind.setGeometry(QtCore.QRect(450, 10, 171, 22))
+        self.cbFind.setObjectName("cbFind")
+        self.txtFind = QtWidgets.QLineEdit(parent=self.frame)
+        self.txtFind.setGeometry(QtCore.QRect(450, 40, 150, 20))
+        self.txtFind.setStyleSheet("background-color: #FFFFFF;\n"
+"")
+        self.txtFind.setObjectName("txtFind")
+        self.addBtn = QtWidgets.QPushButton(parent=self.frame)
+        self.addBtn.setGeometry(QtCore.QRect(450, 70, 171, 25))
+        self.addBtn.setStyleSheet("background-color: #ECB159;")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("TienNuAdmin/img/plus.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.addBtn.setIcon(icon1)
+        self.addBtn.setObjectName("addBtn")
+        self.refreshBtn = QtWidgets.QPushButton(parent=self.frame)
+        self.refreshBtn.setGeometry(QtCore.QRect(450, 100, 171, 25))
+        self.refreshBtn.setStyleSheet("background-color: #ECB159;")
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("TienNuAdmin/img/loading-arrow.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.refreshBtn.setIcon(icon2)
+        self.refreshBtn.setObjectName("refreshBtn")
 
-        # Thêm các thành phần vào QFrame
-        label = QLabel("Đây là trang quản lý User")
-        label.setStyleSheet("font-size: 15px")
-        content_frame_layout.addWidget(label)
+        self.retranslateUi()
+        
+        userBUS = UserBUS()
+        self.addDataToTable(userBUS.readData())
+        
+        self.table.itemClicked.connect(self.setDataClicked)
+        
 
-        # Thiết lập QFrame làm content pane của QMainWindow
 
-        # Đặt kích thước cho QWidget
-        content_frame.setFixedSize(670, 550)
-
-        self.setWindowTitle("Example")
+    def retranslateUi(self):
+        self.label.setText( "USERNAME: ")
+        self.label_3.setText( "PASSWORD: ")
+        self.label_4.setText( "NAME: ")
+        self.label_5.setText( "DATECREATE:")
+        self.addBtn.setText( "ADD")
+        self.refreshBtn.setText( "REFRESH")
+    def addDataToTable(self, lstUser:list):
+        self.table.setColumnCount(5)
+        lstHead = ["STT", "Username", "Password", "Name", "Create Date"]
+        row = 0
+        self.table.setHorizontalHeaderLabels(lstHead)
+        rowCount = len(lstUser)
+        self.table.setRowCount(rowCount)
+        for user in lstUser:
+            self.table.setItem(row,0,QTableWidgetItem(str(row + 1)))
+            self.table.setItem(row,1,QTableWidgetItem(str(user.username)))
+            self.table.setItem(row,2,QTableWidgetItem(str(user.password)))
+            self.table.setItem(row,3,QTableWidgetItem(str(user.name)))
+            self.table.setItem(row,4,QTableWidgetItem(str(user.datecreate)))
+            row += 1
+    def setDataClicked(self,item):
+        row = item.row()
+        self.txtUsername.setText(self.table.item(row,1).text())
+        self.txtPassword.setText(self.table.item(row,2).text())
+        self.txtName.setText(self.table.item(row,3).text())
+        self.txtdate.setText(self.table.item(row,4).text())
+        

@@ -5,6 +5,10 @@ class NhacBUS():
         self.lstNhac = MusicDAO.readData()
     def getData(self):
         return self.lstNhac
+    def getMusicByID(self, musicid:int):
+        for music in self.lstNhac:
+            if music.id == musicid:
+                return music
     def findSongByID(self, data:str):
         
         lstFound = []
