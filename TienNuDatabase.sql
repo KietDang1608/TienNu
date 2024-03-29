@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `category` (
   `title` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table chidepmp3.category: ~7 rows (approximately)
+-- Dumping data for table chidepmp3.category: ~6 rows (approximately)
 REPLACE INTO `category` (`id`, `title`) VALUES
 	(1, 'Nhạc trữ tình'),
 	(2, 'EDM'),
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `favorites` (
   `songID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table chidepmp3.favorites: ~3 rows (approximately)
+-- Dumping data for table chidepmp3.favorites: ~2 rows (approximately)
 REPLACE INTO `favorites` (`userID`, `songID`) VALUES
 	('kietdang', 2),
 	('minhhuu', 3),
@@ -59,10 +59,10 @@ CREATE TABLE IF NOT EXISTS `music` (
 
 -- Dumping data for table chidepmp3.music: ~4 rows (approximately)
 REPLACE INTO `music` (`id`, `category`, `name`, `artist`, `img`, `file`) VALUES
-	(1, 1, 'Huu', 'Kiet', 'haha', 'hihi'),
-	(2, 2, 'Dat', 'Hung', 'hoho', 'huhu'),
-	(3, 3, 'Bai 3', 'Kiet', 'ahihi', 'chua co'),
-	(4, 1, 'Bai 4', 'Phieu', 'chua co hinh', 'chua co mp3');
+	(1, 1, 'Huu', 'Kiet', 'album1.jfif', 'tabun.mp3'),
+	(2, 2, 'Dat', 'Hung', 'song2.jfif', 'tabun.mp3'),
+	(3, 3, 'Bai 3', 'Kiet', 'song3.jfif', 'test.mp3'),
+	(4, 1, 'Bai 4', 'Phieu', 'song4.jfif', 'test.mp3');
 
 -- Dumping structure for table chidepmp3.playlist
 CREATE TABLE IF NOT EXISTS `playlist` (
@@ -91,17 +91,49 @@ REPLACE INTO `playlistdetail` (`playlistID`, `songID`) VALUES
 	(2, 3),
 	(2, 4);
 
+-- Dumping structure for table chidepmp3.slide
+CREATE TABLE IF NOT EXISTS `slide` (
+  `slideID` int(11) NOT NULL AUTO_INCREMENT,
+  `slideTitle` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`slideID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table chidepmp3.slide: ~4 rows (approximately)
+REPLACE INTO `slide` (`slideID`, `slideTitle`) VALUES
+	(1, 'Nhạc hot mùa hè'),
+	(2, 'Nhạc trẻ'),
+	(3, 'Hot gần đây'),
+	(4, 'Chill');
+
+-- Dumping structure for table chidepmp3.slidedetail
+CREATE TABLE IF NOT EXISTS `slidedetail` (
+  `slideID` int(11) DEFAULT NULL,
+  `songid` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table chidepmp3.slidedetail: ~8 rows (approximately)
+REPLACE INTO `slidedetail` (`slideID`, `songid`) VALUES
+	(1, 1),
+	(1, 2),
+	(2, 2),
+	(2, 3),
+	(3, 1),
+	(3, 3),
+	(4, 4),
+	(4, 1);
+
 -- Dumping structure for table chidepmp3.user
 CREATE TABLE IF NOT EXISTS `user` (
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
-  `name` varchar(50) DEFAULT NULL
+  `name` varchar(50) DEFAULT NULL,
+  `createdate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table chidepmp3.user: ~2 rows (approximately)
-REPLACE INTO `user` (`username`, `password`, `name`) VALUES
-	('kietdang', '1', 'Kiệt Đặng'),
-	('minhhuu', '1', 'Minh Hữu');
+REPLACE INTO `user` (`username`, `password`, `name`, `createdate`) VALUES
+	('kietdang', '1', 'Kiệt Đặng', '2024-03-22'),
+	('minhhuu', '1', 'Minh Hữu', '2024-03-22');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

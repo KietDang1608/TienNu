@@ -1,22 +1,7 @@
-from flask import Flask, jsonify, send_file
+import socket
+# Tạo một socket object
 
-app = Flask(__name__)
-
-# Route cơ bản trả về một danh sách mẫu
-@app.route('/data', methods=['GET'])
-def get_data():
-    sample_data = [
-        {"id": 1, "name": "Hữu Khùng"},
-        {"id": 2, "name": "Hưng Khùng"},
-        {"id": 3, "name": "Đạt Khùng"}
-    ]
-    return jsonify(sample_data)
-MP3_FILE_PATH = 'song/test.mp3'  
-
-@app.route('/music', methods=['GET'])
-def stream_music():
-    # Trả về file MP3 dưới dạng streaming
-    return send_file(MP3_FILE_PATH, as_attachment=False)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# Kết nối tới địa chỉ và cổng của server
+server_address = ('127.0.0.1', 3306)
+client_socket.connect(server_address)
