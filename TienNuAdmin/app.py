@@ -1,22 +1,37 @@
-from flask import Flask, jsonify, send_file
+import socket
+import json
+from NhacBUS import NhacBUS
+class Music:
+    def __init__(self, title, artist):
+        self.title = title
+        self.artist = artist
 
-app = Flask(__name__)
+def send_data(client_socket, data):
+    # Chuyển đổi danh sách các đối tượng từ lớp Music thành danh sách các từ điển
+    data_dict = [vars(obj) for obj in data]
+    # Chuyển đổi danh sách các từ điển thành chuỗi JSON
+    json_data = json.dumps(data_dict)
+    # Gửi dữ liệu dưới dạng JSON
+    client_socket.sendall(json_data.encode())
 
-# Route cơ bản trả về một danh sách mẫu
-@app.route('/data', methods=['GET'])
-def get_data():
-    sample_data = [
-        {"id": 1, "name": "Hữu Khùng"},
-        {"id": 2, "name": "Hưng Khùng"},
-        {"id": 3, "name": "Đạt Khùng"}
-    ]
-    return jsonify(sample_data)
-MP3_FILE_PATH = 'song/test.mp3'  
+def run_server():
+    print("Đang chạy server")
+    # Tạo socket và kết nối
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('localhost', 3306))
+    server_socket.listen(1)
 
-@app.route('/music', methods=['GET'])
-def stream_music():
-    # Trả về file MP3 dưới dạng streaming
-    return send_file(MP3_FILE_PATH, as_attachment=False)
+    while True:
+        client_socket, client_address = server_socket.accept()
+        print(f"Connection from {client_address}")
+        nhacBUS = NhacBUS()
+        # Tạo danh sách các đối tượng từ lớp Music
+        music_list = nhacBUS.getData()
 
-if __name__ == '__main__':
-    app.run(debug=True)
+        # Gửi danh sách các đối tượng từ lớp Music dưới dạng JSON
+        send_data(client_socket, music_list)
+
+        client_socket.close()
+
+# Chạy server
+run_server()

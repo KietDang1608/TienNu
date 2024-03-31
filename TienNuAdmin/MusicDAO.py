@@ -18,20 +18,21 @@ def readData():
 
             # In kết quả
             for row in rows:
-                music = Music(row[0],row[1],row[2],row[3],row[4],row[5],)
+                music = Music(row[0],row[1],row[2],row[3],row[4],row[5],row[6],)
                 lstMusic.append(music)
 
         except mysql.connector.Error as e:
             print("Lỗi truy vấn:", e)
 
         finally:
-            return lstMusic
+            
             # Đóng cursor và kết nối
             if 'cursor' in locals():
                 cursor.close()
             if connection.is_connected():
                 connection.close()
                 print("Đã đóng kết nối")
+            return lstMusic
     else:
         print("Không thể kết nối đến cơ sở dữ liệu.")
 def addData(music:Music):
