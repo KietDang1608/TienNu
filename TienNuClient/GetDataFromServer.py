@@ -1,5 +1,7 @@
 import socket
 import json
+import pygame
+import tempfile
 class GetDataFromServer():
     ip = 'localhost'
     port = 3306
@@ -29,6 +31,8 @@ class GetDataFromServer():
         return data_list
     #Gui tin hieu va nhan lai ket qua
     def sendSignal(self, signal):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.ip, self.port))
         receiveData = b""
         try:
             if self.socket:
@@ -47,15 +51,31 @@ class GetDataFromServer():
                 print("Socket connection not established.")
         except Exception as e:
             print(f"Error sending signal: {e}")
-    def getCategoryList(self):
-        try:
-            if self.socket:
-                received_data = self.receive_and_parse_json_data(self.socket)
-                
-                return received_data
-            else:
-                print("Socket connection not established.")
-                return None
-        except Exception as e:
-            print(f"Error receiving data: {e}")
-            return None
+    def playSongFromServer(self,songid:str):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.ip, self.port))
+        signal = "PLAY_SONG_" + songid
+        self.socket.sendall(signal.encode())
+        pygame.init()
+        pygame.mixer.init()
+        temp_audio_file = tempfile.SpooledTemporaryFile(max_size=10000000)  # Adjust max_size as needed
+
+        while True:
+            data = self.socket.recv(1024)
+            if not data:
+                break
+            temp_audio_file.write(data)
+
+        # Move the file pointer to the beginning of the temporary file
+        temp_audio_file.seek(0)
+
+        # Load the temporary file as music
+        pygame.mixer.music.load(temp_audio_file)
+
+        # Play the loaded music
+        pygame.mixer.music.play()
+
+        # # Wait for the music to finish playing
+        # while pygame.mixer.music.get_busy():
+        #     pygame.time.Clock().tick(10)
+        
