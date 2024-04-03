@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import *
 import sys
 import Category_GUI
 import UserGUI
-import PlaylistGUI
+from ServerGUI import ServerGUI
 import Nhac_GUI
 import SlideGUI
 class Main_GUI(QMainWindow):
@@ -69,17 +69,17 @@ class Main_GUI(QMainWindow):
                 self.btnslide.setStyleSheet("background-color: #8785A2;\n"
         "color: #F6F6F6;")
                 icon3 = QtGui.QIcon()
-                icon3.addPixmap(QtGui.QPixmap("TienNuAdmin\img/favourite.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                icon3.addPixmap(QtGui.QPixmap("TienNuAdmin\img/slider.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnslide.setIcon(icon3)
                 self.btnslide.setObjectName("btnslide")
-                self.btnPlayList = QPushButton(parent=self.leftMenuPn)
-                self.btnPlayList.setGeometry(QtCore.QRect(10, 370, 110, 30))
-                self.btnPlayList.setStyleSheet("background-color: #8785A2;\n"
+                self.btnServer = QPushButton(parent=self.leftMenuPn)
+                self.btnServer.setGeometry(QtCore.QRect(10, 370, 110, 30))
+                self.btnServer.setStyleSheet("background-color: #8785A2;\n"
         "color: #F6F6F6;")
                 icon4 = QtGui.QIcon()
-                icon4.addPixmap(QtGui.QPixmap("TienNuAdmin\img/playlist.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-                self.btnPlayList.setIcon(icon4)
-                self.btnPlayList.setObjectName("btnPlayList")
+                icon4.addPixmap(QtGui.QPixmap("TienNuAdmin\img/server.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                self.btnServer.setIcon(icon4)
+                self.btnServer.setObjectName("btnServer")
                 self.titlePn = QFrame(parent=self.content)
                 self.titlePn.setGeometry(QtCore.QRect(130, 0, 670, 50))
                 self.titlePn.setStyleSheet("background-color: #8785A2;\n"
@@ -119,16 +119,16 @@ class Main_GUI(QMainWindow):
                 self.slideGUI = SlideGUI.SlideGUI()
                 self.slideGUI.setObjectName("slideGUI")
                 self.pagesWidget.addWidget(self.slideGUI)
-                self.playGUI = PlaylistGUI.PlaylistGUI()
-                self.playGUI.setObjectName("playGUI")
-                self.pagesWidget.addWidget(self.playGUI)
+                self.serverGUI = ServerGUI()
+                self.serverGUI.setObjectName("serverGUI")
+                self.pagesWidget.addWidget(self.serverGUI)
                 self.setCentralWidget(self.centralwidget)
                 #----------------------------gan link cho btn
                 self.btnMusic.clicked.connect(self.toMusic)
                 self.btnCategory.clicked.connect(self.toCat)
                 self.btnUser.clicked.connect(self.toUser)
                 self.btnslide.clicked.connect(self.toSlide)
-                self.btnPlayList.clicked.connect(self.toPlaylist)
+                self.btnServer.clicked.connect(self.toServer)
                 #--------------------------------------------
 
                 self.retranslateUi()
@@ -140,7 +140,7 @@ class Main_GUI(QMainWindow):
                 self.btnCategory.setText("Categories")
                 self.btnUser.setText( "Users")
                 self.btnslide.setText( "Slides")
-                self.btnPlayList.setText( "Playlist")
+                self.btnServer.setText( "Server")
                 self.pageTitleLB.setText( "MUSICS MANAGEMENT")
         def toMusic(self):
                 self.pageTitleLB.setText("MUSICS MANAGEMENT")
@@ -154,9 +154,9 @@ class Main_GUI(QMainWindow):
         def toSlide(self):
                 self.pageTitleLB.setText("SLIDE MANAGEMENT")
                 self.pagesWidget.setCurrentWidget(self.slideGUI)
-        def toPlaylist(self):
-                self.pageTitleLB.setText("USER'S PLAYLISTS MANAGEMENT")
-                self.pagesWidget.setCurrentWidget(self.playGUI)
+        def toServer(self):
+                self.pageTitleLB.setText("SERVER MANAGEMENT")
+                self.pagesWidget.setCurrentWidget(self.serverGUI)
         
 
 if __name__ == "__main__":

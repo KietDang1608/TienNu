@@ -17,6 +17,12 @@ class NhacBUS():
             if data in text:
                 lstFound.append(music)
         return lstFound
+    def getMP3FileByID(self,id:str):
+        for music in self.lstNhac:
+            musicid = str(music.id)
+            if (id == musicid):
+                return music.mp3
+        return ""
     def findSongByCategoryID(self, data:str):
         lstFound = []
         for music in self.lstNhac:

@@ -36,7 +36,8 @@ while True:
         for item in lst:
             print(item)
     elif choice == 5:
-        client.playSongFromServer("1")
+        song = str(input("Nhap id: "))
+        client.playSongFromServer(song)
         
     elif choice == 6:
         lst = client.sendSignal("GET_FAVORITE_LIST_" + userid)
