@@ -54,15 +54,16 @@ CREATE TABLE IF NOT EXISTS `music` (
   `name` varchar(50) DEFAULT NULL,
   `artist` varchar(50) DEFAULT NULL,
   `img` varchar(50) DEFAULT NULL,
-  `file` varchar(50) DEFAULT NULL
+  `file` varchar(50) DEFAULT NULL,
+  `luotnghe` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table chidepmp3.music: ~4 rows (approximately)
-REPLACE INTO `music` (`id`, `category`, `name`, `artist`, `img`, `file`) VALUES
-	(1, 1, 'Huu', 'Kiet', 'album1.jfif', 'tabun.mp3'),
-	(2, 2, 'Dat', 'Hung', 'song2.jfif', 'tabun.mp3'),
-	(3, 3, 'Bai 3', 'Kiet', 'song3.jfif', 'test.mp3'),
-	(4, 1, 'Bai 4', 'Phieu', 'song4.jfif', 'test.mp3');
+REPLACE INTO `music` (`id`, `category`, `name`, `artist`, `img`, `file`, `luotnghe`) VALUES
+	(1, 1, 'Huu', 'Kiet', 'album1.jfif', 'tabun.mp3', 100),
+	(2, 2, 'Dat', 'Hung', 'song2.jfif', 'tabun.mp3', 200),
+	(3, 3, 'Bai 3', 'Kiet', 'song3.jfif', 'test.mp3', 300),
+	(4, 1, 'Bai 4', 'Phieu', 'song4.jfif', 'test.mp3', 400);
 
 -- Dumping structure for table chidepmp3.playlist
 CREATE TABLE IF NOT EXISTS `playlist` (

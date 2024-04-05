@@ -12,3 +12,8 @@ class FavoriteBUS:
                 lst.append(fav)
         return lst
     
+    def addData(self,userID,songID):
+        self.favoriteDAO.addData(userID,songID)
+    def delData(self,userID,songID):
+        self.favoriteDAO.deleteData(userID,songID)
+        

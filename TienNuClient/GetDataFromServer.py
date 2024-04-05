@@ -3,7 +3,7 @@ import json
 import pygame
 import tempfile
 class GetDataFromServer():
-    ip = 'localhost'
+    ip = 'localhost'#My LAN ip:172.20.10.5
     port = 3306
     def __init__(self):
         self.socket = None
@@ -29,6 +29,21 @@ class GetDataFromServer():
             received_data += chunk
         data_list = json.loads(received_data.decode())  # Chuyển đổi chuỗi JSON thành danh sách
         return data_list
+    def sendAddToFavorite(self,signal):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.ip, self.port))
+        try:
+            if self.socket:
+                self.socket.sendall(signal.encode())
+                print(f"Signal {signal} sent successfully!")
+                received = self.socket.recv(1024)
+                received = received.decode("utf-8")
+                return received
+            else:
+                print("Socket connection not established.")
+        except Exception as e:
+            print(f"Error sending signal: {e}")
+
     #Gui tin hieu va nhan lai ket qua
     def sendSignal(self, signal):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

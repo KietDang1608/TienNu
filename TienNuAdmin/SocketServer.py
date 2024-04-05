@@ -10,7 +10,7 @@ import os
 class SocketServer(QThread):
     message_received = pyqtSignal(str)
     stopped =pyqtSignal()
-    ip = 'localhost'
+    ip = 'localhost'#My LAN: 172.20.10.5
     port = 3306
     def __init__(self):
         super().__init__()
@@ -84,17 +84,26 @@ class SocketServer(QThread):
             while data:
                 self.clientSocket.sendall(data)
                 data = music_file.read(1024)
+    def addToFAV(self,userid:str,songid:str):
+        favBUS = FavoriteBUS()
+        for fav in favBUS.getFavSongsOfUser(userid):
+            if songid == str(fav.songID):
+                self.clientSocket.sendall("0".encode())
+                return 
+        favBUS.addData(userid,songid)
+        self.clientSocket.sendall("1".encode())
+        
     # Hàm nhận tín hiệu gửi từ client, xem tín hiệu là gì tùy trường hợp mà gửi lại dữ liệu tương ứng
     def getSignal(self):
         self.clientSocket, self.clientAddress = self.serverSocket.accept()
+        
         print(f"Connection established with {self.clientAddress}")
         signal = self.clientSocket.recv(1024).decode("utf-8")
+        self.message = signal
         print( "Tin hieu tu client: ",signal)
         if (signal == "GET_CATEGORY_LIST"):
-            self.message = "Server: SEND CATEGORYLIST"
             self.sendCategoryLIST()
         elif signal == "GET_MUSIC_LIST":
-            self.message = "Server: SEND Music list"
             self.sendMusicLIST()
         elif "GET_FAVORITE_LIST" in signal:
             userid = signal.replace("GET_FAVORITE_LIST_","")
@@ -109,4 +118,11 @@ class SocketServer(QThread):
         elif "PLAY_SONG" in signal:
             songid = signal.replace("PLAY_SONG_","")
             self.sendMusic(songid)
+        elif "ADD_TO_FAVORITE" in signal:
+            data = signal.replace("ADD_TO_FAVORITE_","")
+            lstdata = data.split("_")
+            userid = lstdata[0]
+            songid=lstdata[1]
+            self.addToFAV(userid,songid)
+            
         self.clientSocket.close()
