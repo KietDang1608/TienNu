@@ -3,6 +3,7 @@ from NhacBUS import NhacBUS
 from FavoriteBUS import FavoriteBUS
 from PlaylistBUS import PlaylistBUS,PlayListDetailBUS
 from PyQt6.QtCore import QThread,pyqtSignal
+from UserBUS import UserBUS
 import pygame
 import socket
 import json
@@ -52,7 +53,14 @@ class SocketServer(QThread):
         datadict = [vars(obj) for obj in categoryBUS.getData()]
         jsonData = json.dumps(datadict)
         self.clientSocket.sendall(jsonData.encode())
-        
+    def sendUserLIST(self):
+        userBUS = UserBUS()
+        users = userBUS.readData()
+        for user in users:
+            user.datecreate = str(user.datecreate)
+        datadict = [vars(obj) for obj in users]
+        jsonData = json.dumps(datadict)
+        self.clientSocket.sendall(jsonData.encode())
     def sendMusicLIST(self):
         musicBUS = NhacBUS()
         datadict = [vars(obj) for obj in musicBUS.getData()]
@@ -107,7 +115,6 @@ class SocketServer(QThread):
             self.sendMusicLIST()
         elif "GET_FAVORITE_LIST" in signal:
             userid = signal.replace("GET_FAVORITE_LIST_","")
-            self.message = "Server: SEND Favorite musics for user: " + userid
             self.sendFavoriteLIST(userid)
         elif "GET_PLAYLIST_LIST" in signal:
             userid = signal.replace("GET_PLAYLIST_LIST_","")
@@ -124,5 +131,7 @@ class SocketServer(QThread):
             userid = lstdata[0]
             songid=lstdata[1]
             self.addToFAV(userid,songid)
+        elif signal ==  "GET_USER_LIST":
+            self.sendUserLIST()
             
         self.clientSocket.close()

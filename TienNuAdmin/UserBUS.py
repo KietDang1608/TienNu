@@ -8,6 +8,6 @@ class UserBUS:
         return self.lstUser
     def addData(self,user:User):
         self.userDAO.addData(user)
-
+    
         
     

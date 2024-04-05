@@ -17,6 +17,7 @@ while True:
     print("5. Play song 1")
     print("6. Get my favorite songs")
     print("7. add to fav")
+    print("8.Get user List")
     print("0. Thoat")
     lst = []
     choice = int(input("Nhap lua chon: "))
@@ -51,5 +52,10 @@ while True:
         songid = str(input("Nhap nhac can them: "))
         receive = client.sendAddToFavorite("ADD_TO_FAVORITE_" + userid + "_" + songid)
         print(receive)
+    elif choice == 8:
+        print("User list: ")
+        lst = client.sendSignal("GET_USER_LIST")
+        for item in lst:
+            print(item)
     else:
         break
