@@ -9,14 +9,19 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
+import pygame
 
 
 
 
 class baihat(QWidget):
-    def __init__(self,TenBaiHat):
+    def __init__(self,TenBaiHat,TacGia,ThoiLuong,TenHinh,mp3):
         super().__init__()
         self.TenBaiHat=TenBaiHat
+        self.TacGia=TacGia
+        self.ThoiLuong=ThoiLuong
+        self.TenHinh=TenHinh
+        self.mp3=mp3
         self.setUi()
     def setUi(self):
         self.resize(585, 94)
@@ -29,8 +34,7 @@ class baihat(QWidget):
         self.lblHinh = QtWidgets.QLabel(parent=self.frame)
         self.lblHinh.setGeometry(QtCore.QRect(0, 10, 61, 61))
         self.lblHinh.setText("")
-        self.lblHinh.setPixmap(QtGui.QPixmap("TienNuClient/imgs/chidep-icon.jpg"))
-        self.lblHinh.setScaledContents(True)
+        
         self.lblHinh.setObjectName("lblHinh")
         self.lblTenBaiHat = QtWidgets.QLabel(parent=self.frame)
         self.lblTenBaiHat.setGeometry(QtCore.QRect(70, 20, 111, 16))
@@ -52,6 +56,8 @@ class baihat(QWidget):
         self.btnPlay.setIcon(icon)
         self.btnPlay.setIconSize(QtCore.QSize(50, 50))
         self.btnPlay.setObjectName("btnPlay")
+        self.btnPlay.clicked.connect(self.playSong)
+        
         self.btnPlayList = QtWidgets.QPushButton(parent=self.frame)
         self.btnPlayList.setGeometry(QtCore.QRect(390, 10, 51, 61))
         self.btnPlayList.setText("")
@@ -73,9 +79,30 @@ class baihat(QWidget):
 
     def retranslateUi(self):
         self.lblTenBaiHat.setText(str(self.TenBaiHat))
-        self.lblTacGia.setText("Tuệ Ny")
-        self.lblThoiLuong.setText("08:21")
+        self.lblTacGia.setText(str(self.TacGia))
+        self.lblThoiLuong.setText(str(self.ThoiLuong))
+        self.lblHinh.setPixmap(QtGui.QPixmap.fromImage(QtGui.QImage("TienNuClient/imgs/" + self.TenHinh)))
+        self.lblHinh.setScaledContents(True)
 
+    def playSong(self):
+                # self.btnStop.setVisible(True)
+                pygame.mixer.init()
+
+                songPath = "TienNuClient/song/" +self.mp3
+                pygame.mixer.stop()
+                try:
+            # Load the song using pygame mixer
+                        song = pygame.mixer.Sound(songPath)
+                        song.play()
+                        self.btnPlay.clicked.connect(self.stopPlaySong)
+                except Exception as e:
+                        QMessageBox.information(None, "Thông báo!", "Lỗi khi phát nhạc!")
+                        # self.btnStop.setVisible(False)
+
+    def stopPlaySong(self):
+                # self.btnStop.setVisible(False)
+                pygame.mixer.stop()
+                self.btnPlay.clicked.connect(self.playSong)
 
 if __name__ == "__main__":
     bh=baihat()

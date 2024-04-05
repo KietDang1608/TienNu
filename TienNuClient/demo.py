@@ -10,14 +10,22 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QVBoxLayout,QSizePolicy
 from PyQt6.QtWidgets import *
 import baihat
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(812, 591)
+import NhacBUS
+import playlist_GUI
+# userIDDemo=""
+
+class demo(QMainWindow):
+    userIDDemo=""
+    def __init__(self):
+                super().__init__()
+                self.setupUi();
+ 
+    def setupUi(self):
+        self.resize(812, 591)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("imgs/chidep.jpg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        MainWindow.setWindowIcon(icon)
-        self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+        self.setWindowIcon(icon)
+        self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
         self.menuPanel = QtWidgets.QFrame(parent=self.centralwidget)
         self.menuPanel.setGeometry(QtCore.QRect(0, 0, 201, 591))
@@ -44,6 +52,7 @@ class Ui_MainWindow(object):
         self.txtSearch.setObjectName("txtSearch")
         self.btnTrangChu = QtWidgets.QPushButton(parent=self.menuPanel)
         self.btnTrangChu.setGeometry(QtCore.QRect(20, 130, 151, 28))
+        self.btnTrangChu.clicked.connect(self.toTrangchu)
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
@@ -58,6 +67,7 @@ class Ui_MainWindow(object):
         self.btnPlayList.setFont(font)
         self.btnPlayList.setStyleSheet("color: #9EC8B9;")
         self.btnPlayList.setObjectName("btnPlayList")
+        self.btnPlayList.clicked.connect(self.toPlaylist)
         self.btnYeuThich = QtWidgets.QPushButton(parent=self.menuPanel)
         self.btnYeuThich.setGeometry(QtCore.QRect(20, 230, 151, 28))
         font = QtGui.QFont()
@@ -86,7 +96,6 @@ class Ui_MainWindow(object):
         # self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         
         self.scrollArea.setObjectName("scrollArea")
-        
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setFixedWidth(611)
         self.scrollAreaWidgetContents.setFixedHeight(591)
@@ -94,40 +103,61 @@ class Ui_MainWindow(object):
         self.layout.setHorizontalSpacing(0)
         self.layout.setVerticalSpacing(0)
         self.scrollAreaWidgetContents.setLayout(self.layout)
-        baihat1=baihat.baihat("Hôn lễ của anh")
-        baihat2=baihat.baihat("a")
-        baihat3=baihat.baihat("b")
-        baihat4=baihat.baihat("c")
-        baihat5=baihat.baihat("e")
-        self.layout.addWidget(baihat1,0,0)
-        self.layout.addWidget(baihat2,1,0)
-        self.layout.addWidget(baihat3,2,0)
-        self.layout.addWidget(baihat4,3,0)
-        self.layout.addWidget(baihat5,4,0)
+        nhacBUS=NhacBUS.NhacBUS()
+        self.addDataToWidget(nhacBUS.getData())
         self.scrollAreaWidgetContents.setLayout(self.layout)
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 609, 589))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        MainWindow.setCentralWidget(self.centralwidget)
+        
+        self.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
+        self.retranslateUi()
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Chị Đẹp MP3"))
+        self.setWindowTitle(_translate("MainWindow", "Chị Đẹp MP3"))
         self.appName.setText(_translate("MainWindow", "Chị Đẹp MP3"))
         self.btnTrangChu.setText(_translate("MainWindow", "Trang chủ"))
         self.btnPlayList.setText(_translate("MainWindow", "PlayList"))
         self.btnYeuThich.setText(_translate("MainWindow", "Yêu thích"))
         self.btnTaiKhoan.setText(_translate("MainWindow", "Tài khoản cá nhân"))
 
+    def addDataToWidget(self, lstMusic:list):
+        row=0
+        for music in lstMusic:
+            self.baihat=baihat.baihat(str(music.name),str(music.artist),str(music.luotNghe),str(music.img),str(music.mp3))
+            self.layout.addWidget(self.baihat,row,0)
+            row+=1
+        
+    
+    def setUserID(self, userID):
+        self.userIDDemo=userID
+        print(self.userIDDemo)
 
+    def toPlaylist(self):
+        self.playlist_GUI = playlist_GUI.playlist_GUI(self.userIDDemo)
+        self.playlist_GUI.setObjectName("playlist_GUI")
+        self.scrollArea.setWidget(self.playlist_GUI)
+    def toTrangchu(self):
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setFixedWidth(611)
+        self.scrollAreaWidgetContents.setFixedHeight(591)
+        self.layout = QGridLayout()
+        self.layout.setHorizontalSpacing(0)
+        self.layout.setVerticalSpacing(0)
+        self.scrollAreaWidgetContents.setLayout(self.layout)
+        nhacBUS=NhacBUS.NhacBUS()
+        self.addDataToWidget(nhacBUS.getData())
+        self.scrollAreaWidgetContents.setLayout(self.layout)
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 609, 589))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    ui = demo()
+    ui.show()
+    
     sys.exit(app.exec())

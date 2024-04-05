@@ -1,7 +1,9 @@
 from GetDataFromServer import GetDataFromServer
 import pygame
+import demo
 client = GetDataFromServer()
 client.connect()
+
 # lst =  client.sendSignal("GET_SONGS_OF_PLAYLIST_1")
 # for i in lst:
 #     print(i)
@@ -38,6 +40,7 @@ while True:
             print(item)
     elif choice == 5:
         song = str(input("Nhap id: "))
+        
         client.playSongFromServer(song)
         
     elif choice == 6:
