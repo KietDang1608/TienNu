@@ -7,10 +7,12 @@
 
 from functools import partial
 from PyQt6 import QtCore, QtGui, QtWidgets
-import UserBUS
 import demo
 import baihat
 userID=""
+from GetDataFromServer import GetDataFromServer
+client = GetDataFromServer()
+client.connect()
 
 class dangnhap(object):
     
@@ -36,14 +38,18 @@ class dangnhap(object):
         self.txtPassword.setGeometry(QtCore.QRect(100, 110, 231, 22))
         self.txtPassword.setObjectName("txtPassword")
 
-        userBus=UserBUS.UserBUS()
-
         dm = demo.demo()
+        lstUser =[]
+        lst = client.sendSignal("GET_USER_LIST")
+        for user in lst:
+            lstUser.append(user['username'])
+        print(lstUser)
+
 
         self.btnDangNhap = QtWidgets.QPushButton(parent=Form)
         self.btnDangNhap.setGeometry(QtCore.QRect(60, 160, 75, 24))
         self.btnDangNhap.setObjectName("btnDangNhap")
-        self.btnDangNhap.clicked.connect(lambda: self.ValidUser(self.txtUsername.text(),self.txtPassword.text(),userBus.readData(),dm))
+        self.btnDangNhap.clicked.connect(lambda: self.ValidUser(self.txtUsername.text(),self.txtPassword.text(),lst,dm))
 
         self.btnDangKy = QtWidgets.QPushButton(parent=Form)
         self.btnDangKy.setGeometry(QtCore.QRect(250, 160, 75, 24))
@@ -62,14 +68,14 @@ class dangnhap(object):
         self.btnDangNhap.setText(_translate("Form", "Đăng nhập"))
         self.btnDangKy.setText(_translate("Form", "Đăng ký"))
 
-    def ValidUser(self,username,password,lstUser:list,dm):
+    def ValidUser(self,username,password,lst,dm):
         
         # global userID
-        for user in lstUser:
-            if((str(username)==str(user.username) )and (str(password)==str(user.password))):
-                userID=str(user.username)
+        for user in lst:
+            if((str(username)==str(user['username']) )and (str(password)==str(user['password']))):
+                userID=str(user['username'])
                 # print(userIDdemo)
-                dm.setUserID(userID)
+                dm.setUserID(user['username'])
                 dm.show()
                 self.tat()
                 return userID
@@ -85,7 +91,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
     ui = dangnhap()
-    
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec())

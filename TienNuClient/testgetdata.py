@@ -7,7 +7,7 @@ client.connect()
 # lst =  client.sendSignal("GET_SONGS_OF_PLAYLIST_1")
 # for i in lst:
 #     print(i)
-userid = "kietdang"
+userid = "minhhuu"
 
 while True:
     print("1. Get list category")    
@@ -41,9 +41,7 @@ while True:
             print(item)
     elif choice == 5:
         song = str(input("Nhap id: "))
-        
         client.playSongFromServer(song)
-        
     elif choice == 6:
         lst = client.sendSignal("GET_FAVORITE_LIST_" + userid)
         for item in lst:
@@ -51,6 +49,10 @@ while True:
     elif choice == 7:
         songid = str(input("Nhap nhac can them: "))
         receive = client.sendAddToFavorite("ADD_TO_FAVORITE_" + userid + "_" + songid)
+        print(receive)
+    elif choice == 9:
+        songid = str(input("Nhap nhac can them: "))
+        receive = client.sendAddToPlaylist("ADD_TO_PLAYLIST_" + "3" + "_" + songid)
         print(receive)
     elif choice == 8:
         print("User list: ")
