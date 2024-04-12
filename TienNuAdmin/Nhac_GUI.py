@@ -219,6 +219,9 @@ class Nhac_GUI(QWidget):
                 
                 self.addDataToTable(musicBus.getData())
                 self.table.itemClicked.connect(self.setDataClicked)
+                
+                self.addBtn.clicked.connect(self.addSong)
+                self.refreshBtn.clicked.connect(lambda:self.addDataToTable(musicBus.getData()))
         
         def retranslateUi(self):
                 self.label.setText( "ID :")
@@ -233,7 +236,9 @@ class Nhac_GUI(QWidget):
                 self.deleteBtn.setText( "DELETE")
                 self.refreshBtn.setText( "REFRESH")
         def addDataToTable(self, lstMusic:list):
-                
+                self.table.clearContents()
+                self.table.setRowCount(0)
+                self.table.setColumnCount(0)
                 #Reset lai cb truong hop co du lieu category moi
                 self.setCBItems()
                 
@@ -345,6 +350,10 @@ class Nhac_GUI(QWidget):
                 # Show message box alert for file outside SongIMG folder
                                 QMessageBox.warning(self, "Warning", "Please select a file from the song folder.", QMessageBox.StandardButton.Ok)             
         def addSong(self):
-                song = Music()
+                bus= NhacBUS.NhacBUS()
+                song = Music(None,self.cbCate.currentIndex()+1,self.txtName.text(),self.txtArtist.text(),self.txtimg.text(),self.txtmp3.text(),0)
+                
+                bus.addSong(song)
+                self.addDataToTable(bus.getData())
                 
 

@@ -39,5 +39,8 @@ def addData(music:Music):
     connection = Connect_DB.getConnection()
     if connection is not None:
         cursor = connection.cursor()
-        sql = "INSERT INTO music VALUE()"
-        cursor.execute
+        cursor.execute("INSERT INTO music(category,name,artist,img, file) VALUE(%s,%s,%s,%s,%s)",(music.catID,music.name,music.artist,music.img,music.mp3))
+        connection.commit()
+        cursor.close()
+        connection.close()
+
