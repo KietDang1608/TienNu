@@ -4,7 +4,7 @@ import pygame
 import tempfile
 class GetDataFromServer():
     ip = 'localhost'#My LAN ip:172.20.10.5
-    port = 3306
+    port = 8888
     def __init__(self):
         self.socket = None
     def connect(self):
@@ -43,6 +43,35 @@ class GetDataFromServer():
                 print("Socket connection not established.")
         except Exception as e:
             print(f"Error sending signal: {e}")
+    def sendAddToPlaylist(self,signal):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.ip, self.port))
+        try:
+            if self.socket:
+                self.socket.sendall(signal.encode())
+                print(f"Signal {signal} sent successfully!")
+                received = self.socket.recv(1024)
+                received = received.decode("utf-8")
+                return received
+            else:
+                print("Socket connection not established.")
+        except Exception as e:
+            print(f"Error sending signal: {e}")
+    def sendRemoveFavorite(self,signal):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.ip, self.port))
+        try:
+            if self.socket:
+                self.socket.sendall(signal.encode())
+                print(f"Signal {signal} sent successfully!")
+                received = self.socket.recv(1024)
+                received = received.decode("utf-8")
+                return received
+            else:
+                print("Socket connection not established.")
+        except Exception as e:
+            print(f"Error sending signal: {e}")
+
 
     #Gui tin hieu va nhan lai ket qua
     def sendSignal(self, signal):
