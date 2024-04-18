@@ -3,5 +3,5 @@ class Favorite:
         self.userID = userID
         self.songID = songID
     def __str__(self):
-        return f"{ {self.userID}, {self.songID} }"
+        return f"{self.userID}, {self.songID}"
         

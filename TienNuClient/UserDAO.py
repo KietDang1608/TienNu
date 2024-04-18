@@ -21,7 +21,7 @@ class UserDAO:
 
                 # In kết quả
                 for row in rows:
-                    user = User(row[0],row[1],row[2],row[3])
+                    user = User(row[0],row[1],row[2],str(row[3]))
                     lstUser.append(user)
 
             except mysql.connector.Error as e:

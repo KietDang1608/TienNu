@@ -39,4 +39,18 @@ class FavoriteDAO:
         else:
             print("Không thể kết nối đến cơ sở dữ liệu.")
 
-
+    def addData(self,userid:str,songid:str):
+        connection = Connect_DB.getConnection()
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO favorites(userID, songID) value(%s,%s)",(userid,songid))
+        connection.commit()
+        cursor.close()
+        connection.close()
+    def deleteData(self,userid:str,songid:str):
+        connection = Connect_DB.getConnection()
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM favorites where userID = %s and songID = %s ", (userid,songid))
+        connection.commit()
+        cursor.close()
+        connection.close()
+        

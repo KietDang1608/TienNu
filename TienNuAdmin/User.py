@@ -5,4 +5,4 @@ class User:
         self.name = name
         self.datecreate = datecreate
     def __str__(self) :
-        return f"[Username:{self.username},Password:{self.password},Name:{self.name},Datecreate:{self.datecreate}]"
+        return f"{self.username},{self.password},{self.name},{self.datecreate}"

@@ -7,7 +7,7 @@ class PlaylistDAO:
     
     def readData(self):
         connection = Connect_DB.getConnection()
-        lstPlaylist = [];
+        lstPlaylist = []
         if connection is not None:
             try:
                 # Tạo một đối tượng cursor
@@ -38,13 +38,14 @@ class PlaylistDAO:
                 return lstPlaylist
         else:
             print("Không thể kết nối đến cơ sở dữ liệu.")
+
 class PlaylistDetailDAO:
     def __init__(self):
         pass
     
     def readData(self):
         connection = Connect_DB.getConnection()
-        lstdetail = [];
+        lstdetail = []
         if connection is not None:
             try:
                 # Tạo một đối tượng cursor
@@ -75,3 +76,10 @@ class PlaylistDetailDAO:
                 return lstdetail
         else:
             print("Không thể kết nối đến cơ sở dữ liệu.")
+    def addData(self,id:str,songid:str):
+        connection = Connect_DB.getConnection()
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO playlistdetail(playlistID,songID) value(%s,%s)",(id,songid))
+        connection.commit()
+        cursor.close()
+        connection.close()

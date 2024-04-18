@@ -10,17 +10,22 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QVBoxLayout,QSizePolicy
 from PyQt6.QtWidgets import *
 import baihat
-import NhacBUS
+
 import playlist_GUI
+import Favorite_Gui
+from GetDataFromServer import GetDataFromServer
 # userIDDemo=""
 
 class demo(QMainWindow):
     userIDDemo=""
+
     def __init__(self):
                 super().__init__()
-                self.setupUi();
+                self.setupUi()
  
     def setupUi(self):
+        
+       
         self.resize(812, 591)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("imgs/chidep.jpg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
@@ -76,6 +81,7 @@ class demo(QMainWindow):
         self.btnYeuThich.setFont(font)
         self.btnYeuThich.setStyleSheet("color: #9EC8B9;")
         self.btnYeuThich.setObjectName("btnYeuThich")
+        self.btnYeuThich.clicked.connect(self.toFavorite)
         self.label = QtWidgets.QLabel(parent=self.menuPanel)
         self.label.setGeometry(QtCore.QRect(20, 20, 31, 31))
         self.label.setText("")
@@ -103,8 +109,9 @@ class demo(QMainWindow):
         self.layout.setHorizontalSpacing(0)
         self.layout.setVerticalSpacing(0)
         self.scrollAreaWidgetContents.setLayout(self.layout)
-        nhacBUS=NhacBUS.NhacBUS()
-        self.addDataToWidget(nhacBUS.getData())
+        
+      
+       
         self.scrollAreaWidgetContents.setLayout(self.layout)
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 609, 589))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
@@ -124,22 +131,33 @@ class demo(QMainWindow):
         self.btnYeuThich.setText(_translate("MainWindow", "Yêu thích"))
         self.btnTaiKhoan.setText(_translate("MainWindow", "Tài khoản cá nhân"))
 
-    def addDataToWidget(self, lstMusic:list):
+    def addDataToWidget(self,lstMusic):
         row=0
         for music in lstMusic:
-            self.baihat=baihat.baihat(str(music.name),str(music.artist),str(music.luotNghe),str(music.img),str(music.mp3))
+            self.baihat=baihat.baihat(str(music["id"]),str(music["name"]),str(music["artist"]),str(music["luotNghe"]),str(music["img"]),music["mp3"],self.userIDDemo)
+            print(self.userIDDemo)
             self.layout.addWidget(self.baihat,row,0)
             row+=1
         
     
     def setUserID(self, userID):
+
         self.userIDDemo=userID
-        print(self.userIDDemo)
+        client = GetDataFromServer()
+        client.connect()
+        lstMusic = client.sendSignal("GET_MUSIC_LIST")
+        self.addDataToWidget(lstMusic)
+       
+
 
     def toPlaylist(self):
         self.playlist_GUI = playlist_GUI.playlist_GUI(self.userIDDemo)
         self.playlist_GUI.setObjectName("playlist_GUI")
         self.scrollArea.setWidget(self.playlist_GUI)
+    def toFavorite(self):
+        self.Favorite_Gui = Favorite_Gui.Favorite_GUI(self.userIDDemo)
+        self.Favorite_Gui.setObjectName("Favorite_Gui")
+        self.scrollArea.setWidget(self.Favorite_Gui)
     def toTrangchu(self):
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setFixedWidth(611)
@@ -148,12 +166,15 @@ class demo(QMainWindow):
         self.layout.setHorizontalSpacing(0)
         self.layout.setVerticalSpacing(0)
         self.scrollAreaWidgetContents.setLayout(self.layout)
-        nhacBUS=NhacBUS.NhacBUS()
-        self.addDataToWidget(nhacBUS.getData())
+        client = GetDataFromServer()
+        client.connect()
+        lstMusic = client.sendSignal("GET_MUSIC_LIST")
+        self.addDataToWidget(lstMusic)
         self.scrollAreaWidgetContents.setLayout(self.layout)
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 609, 589))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+    
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

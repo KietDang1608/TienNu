@@ -9,10 +9,8 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 import pygame
-from PlaylistBUS import PlaylistBUS,PlayListDetailBUS
-import NhacBUS
 import baihat
-
+from GetDataFromServer import GetDataFromServer
 class playlist_GUI(QWidget):
     def __init__(self,userIDDemo):
         super().__init__()
@@ -46,22 +44,28 @@ class playlist_GUI(QWidget):
 
     def getPlaylistID(self):
         userIDDemoa = str(self.userIDDemo)  # Example user ID
-        lstPlaylist = PlaylistBUS().getPLaylistByUserID(userIDDemoa)
-        # lstPlaylist=PlaylistBUS.getPLaylistByUserID(str(self.userIDDemo))
+        client = GetDataFromServer()
+        client.connect()
+        lstMusic_playlist = client.sendSignal("GET_PLAYLIST_LIST_" + self.userIDDemo)
+        
+        print(lstMusic_playlist)
+    
+       
         row=0
-        for playlist in lstPlaylist:
-            print(playlist.toString())
-            playlistID=str(playlist.id)
-            lstPlaylistDetail = PlayListDetailBUS().getPlayListByID(playlistID)
+        for playlist in lstMusic_playlist:
+            playlistID=str(playlist["id"])
+            
+            lstPlaylistDetail = client.sendSignal("GET_SONGS_OF_PLAYLIST_" + playlistID)
+            lstMusic = client.sendSignal("GET_MUSIC_LIST")
             for playlistdetail in lstPlaylistDetail:
-                print(playlistdetail.toString)
-                musicID=int(playlistdetail.songid)
-                music=NhacBUS.NhacBUS().getMusicByID(musicID)
-                self.baihat=baihat.baihat(str(music.name),str(music.artist),str(music.luotNghe)
-                                              ,str(music.img),str(music.mp3))
+                musicID=int(playlistdetail["songid"])
+                for music in lstMusic:
+                    if music["id"] == musicID:
+                         self.baihat=baihat.baihat(str(music["id"]),str(music["name"]),str(music["artist"]),str(music["luotNghe"]),str(music["img"]),str(music["mp3"]),self.userIDDemo)
+                         self.layout.addWidget(self.baihat,row,0)
+                         row+=1   
                     
-                self.layout.addWidget(self.baihat,row,0)
-                row+=1
+            
                     
 
 
