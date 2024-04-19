@@ -17,7 +17,7 @@ import SlideGUI
 class Main_GUI(QMainWindow):
         def __init__(self):
                 super().__init__()
-                self.initUI();
+                self.initUI()
                 
         def initUI(self):
                 self.resize(800, 600)
@@ -134,7 +134,6 @@ class Main_GUI(QMainWindow):
                 self.retranslateUi()
                 self.pagesWidget.setCurrentIndex(0)
                 QtCore.QMetaObject.connectSlotsByName(self)
-
         def retranslateUi(self):
                 self.btnMusic.setText( "Music")
                 self.btnCategory.setText("Categories")
