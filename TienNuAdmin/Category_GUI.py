@@ -102,8 +102,11 @@ class Category_GUI(QWidget):
                 
                 #------------------Them data vao bang
                 self.addDataToTable()
-                self.cat_table.connect(self.setDataClicked)
-
+                self.cat_table.itemClicked.connect(self.setDataClicked)
+                self.btnAdd.clicked.connect(self.addData)
+                self.btnReFresh.clicked.connect(self.reloadTable)
+                self.btnUpdate.clicked.connect(self.editData)
+                self.btnDel.clicked.connect(self.delData)
                 
         
         def retranslateUi(self):
@@ -113,8 +116,12 @@ class Category_GUI(QWidget):
                 self.btnUpdate.setText( "UPDATE")
                 self.btnDel.setText("DELETE")
                 self.btnReFresh.setText("REFRESH")
-
+        def reloadTable(self):
+                self.addDataToTable()
         def addDataToTable(self):
+                self.cat_table.clearContents()
+                self.cat_table.setRowCount(0)
+                self.cat_table.setColumnCount(0)
                 self.cat_table.setColumnCount(2)
                 lstHead = ['ID', 'Title']
                 self.cat_table.setHorizontalHeaderLabels(lstHead)
@@ -129,7 +136,20 @@ class Category_GUI(QWidget):
                         row += 1
         def setDataClicked(self,item):
                 row = item.row()
-                self.txtCatID.setText(self.table.item(row,0).text())
-                self.txtTitle.setText(self.table.item(row,1).text())
+                self.txtCatID.setText(self.cat_table.item(row,0).text())
+                self.txtTitle.setText(self.cat_table.item(row,1).text())
         def addData(self):
-                cat = Category
+                cat = Category(0,self.txtTitle.text())
+                bus = Category_BUS()
+                bus.addData(cat)
+                self.reloadTable()
+        def editData(self):
+                cat = Category(int(self.txtCatID.text()),self.txtTitle.text())
+                bus = Category_BUS()
+                bus.editData(cat)
+                self.reloadTable()
+        def delData(self):
+                cat = Category(int(self.txtCatID.text()),self.txtTitle.text())
+                bus = Category_BUS()
+                bus.delData(cat)
+                self.reloadTable()

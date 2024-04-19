@@ -41,7 +41,7 @@ def addData(cat:Category):
     connection = Connect_DB.getConnection()
     if connection is not None:
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO category(title) VALUE(%s)",(cat.title))
+        cursor.execute("INSERT INTO category(title) VALUE(%s)",(cat.title,))
         connection.commit()
         cursor.close()
         connection.close()

@@ -4,7 +4,7 @@ import pygame
 import tempfile
 class GetDataFromServer():
     ip = 'localhost'#My LAN ip:172.20.10.5
-    port = 8888
+    port = 3306
     def __init__(self):
         self.socket = None
     def connect(self):

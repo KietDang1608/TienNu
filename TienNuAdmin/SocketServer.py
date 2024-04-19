@@ -12,7 +12,7 @@ class SocketServer(QThread):
     message_received = pyqtSignal(str)
     stopped =pyqtSignal()
     ip = 'localhost'#My LAN: 172.20.10.5
-    port = 8888
+    port = 3306
     def __init__(self):
         super().__init__()
         self.running = False
@@ -123,7 +123,7 @@ class SocketServer(QThread):
         self.clientSocket, self.clientAddress = self.serverSocket.accept()
         print(f"Connection established with {self.clientAddress}")
         signal = self.clientSocket.recv(1024).decode("utf-8")
-        self.message = signal
+        self.message = self.clientAddress.__str__() + ": " + signal
         print( "Tin hieu tu client: ",signal)
         if (signal == "GET_CATEGORY_LIST"):
             self.sendCategoryLIST()
