@@ -118,6 +118,14 @@ class SocketServer(QThread):
                 return
         PlDetailBus.addData(id,songid)
         self.clientSocket.sendall("1".encode())
+
+    def updateUser(self,username:str,name:str,password:str):
+        userBUS = UserBUS()  
+    
+        userBUS.updateUser(password,name,username)
+        self.clientSocket.sendall("1".encode())
+        return
+        
     # Hàm nhận tín hiệu gửi từ client, xem tín hiệu là gì tùy trường hợp mà gửi lại dữ liệu tương ứng
     def getSignal(self):
         self.clientSocket, self.clientAddress = self.serverSocket.accept()
@@ -159,6 +167,13 @@ class SocketServer(QThread):
             userid = lstdata[0]
             songid=lstdata[1]
             self.removeToFAV(userid,songid)
+        elif "UPDATE_TO_USER" in signal:
+            data = signal.replace("UPDATE_TO_USER_","")
+            lstdata = data.split("_")
+            username=lstdata[0]
+            name=lstdata[1]
+            password=lstdata[2]
+            self.updateUser(username,name,password)
         elif signal ==  "GET_USER_LIST":
             self.sendUserLIST()
             
