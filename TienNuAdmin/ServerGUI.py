@@ -94,6 +94,5 @@ class ServerGUI(QWidget):
     def addMessage(self,message):
         date = datetime.datetime.now().date().__str__()
         time = datetime.datetime.now().strftime("%H:%M:%S").__str__()
-        old_message = self.message.toPlainText()
         self.message.append( date + "|" + time + ": " + message)
         

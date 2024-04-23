@@ -7,6 +7,7 @@
 
 from functools import partial
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtWidgets import *
 import demo
 import baihat
 userID=""
@@ -40,10 +41,14 @@ class dangnhap(object):
 
         dm = demo.demo()
         lstUser =[]
-        lst = client.sendSignal("GET_USER_LIST")
-        for user in lst:
-            lstUser.append(user['username'])
-        print(lstUser)
+        try:
+            lst = client.sendSignal("GET_USER_LIST")
+            for user in lst:
+                lstUser.append(user['username'])
+            print(lstUser)
+        except TypeError:
+            QMessageBox.warning(Form,"Warning", "Server đang đóng!.", QMessageBox.StandardButton.Ok)
+            exit()
 
 
         self.btnDangNhap = QtWidgets.QPushButton(parent=Form)
@@ -79,6 +84,7 @@ class dangnhap(object):
                 dm.setPassword(user['password'])
                 dm.setName(user['name'])
                 dm.show()
+                client.sendLoggedIn(userID)
                 self.tat()
                 return userID
                 

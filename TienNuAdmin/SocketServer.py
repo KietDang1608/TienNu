@@ -33,7 +33,7 @@ class SocketServer(QThread):
             self.message = f"Server is listening on {self.host}: {self.port}"
             while True:
                 self.getSignal()
-                self.message_received.emit(self.message)
+                
         except Exception as e:
             print (f'Error starting server: {e}')
         self.stopped.emit()
@@ -150,6 +150,7 @@ class SocketServer(QThread):
         print(f"Connection established with {self.clientAddress}")
         signal = self.clientSocket.recv(1024).decode("utf-8")
         self.message = self.clientAddress.__str__() + ": " + signal
+        
         print( "Tin hieu tu client: ",signal)
         if (signal == "GET_CATEGORY_LIST"):
             self.sendCategoryLIST()
@@ -166,21 +167,25 @@ class SocketServer(QThread):
             self.sendSongsInPlaylist(playlistid)
         elif "PLAY_SONG" in signal:
             songid = signal.replace("PLAY_SONG_","")
+            self.message_received.emit(self.message)
             self.sendMusic(songid)
         elif "ADD_TO_FAVORITE" in signal:
             data = signal.replace("ADD_TO_FAVORITE_","")
+            self.message_received.emit(self.message)
             lstdata = data.split("_")
             userid = lstdata[0]
             songid=lstdata[1]
             self.addToFAV(userid,songid)
         elif "ADD_TO_PLAYLIST" in signal:
             data = signal.replace("ADD_TO_PLAYLIST_","")
+            self.message_received.emit(self.message)
             lstdata = data.split("_")
             id = lstdata[0]
             songid=lstdata[1]
             self.addPlayList(id,songid)
         elif "REMOVE_TO_FAVORITE" in signal:
             data = signal.replace("REMOVE_TO_FAVORITE_","")
+            self.message_received.emit(self.message)
             lstdata = data.split("_")
             userid = lstdata[0]
             songid=lstdata[1]
@@ -188,12 +193,14 @@ class SocketServer(QThread):
 
         elif "REMOVE_TO_PLAYLIST" in signal:
             data = signal.replace("REMOVE_TO_PLAYLIST_","")
+            self.message_received.emit(self.message)
             lstdata = data.split("_")
             userid = lstdata[0]
             songid=lstdata[1]
             self.removePlayList(userid,songid)
         elif "ADD_PLAYLIST" in signal:
             data = signal.replace("ADD_PLAYLIST_","")
+            self.message_received.emit(self.message)
             lstdata = data.split("_")
             id = lstdata[0]
             userid=lstdata[1]
@@ -202,12 +209,14 @@ class SocketServer(QThread):
 
         elif "UPDATE_TO_USER" in signal:
             data = signal.replace("UPDATE_TO_USER_","")
+            self.message_received.emit(self.message)
             lstdata = data.split("_")
             username=lstdata[0]
             name=lstdata[1]
             password=lstdata[2]
             self.updateUser(username,name,password)
-
+        elif "logged" in signal:
+            self.message_received.emit(self.message)
         elif signal ==  "GET_USER_LIST":
             self.sendUserLIST()
             

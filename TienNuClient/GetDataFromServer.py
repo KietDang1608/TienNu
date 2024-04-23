@@ -30,6 +30,16 @@ class GetDataFromServer():
             received_data += chunk
         data_list = json.loads(received_data.decode())  # Chuyển đổi chuỗi JSON thành danh sách
         return data_list
+    def sendLoggedIn(self,userid):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.ip, self.port))
+        try:
+            if self.socket:
+                self.socket.sendall((userid + " logged in!").encode())
+            else:
+                print("Socket connection not established.")
+        except Exception as e:
+            print(f"Error sending signal: {e}")
     def sendAddToFavorite(self,signal):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.ip, self.port))

@@ -49,7 +49,6 @@ class Favorite_GUI(QWidget):
         lstMusic_favorite = client.sendSignal("GET_FAVORITE_LIST_" + self.userIDDemo)
         print(lstMusic_favorite)
     
-       
         row=0
         for playlist in lstMusic_favorite:
             playlistID=int(playlist["songID"])
