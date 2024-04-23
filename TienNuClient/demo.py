@@ -145,6 +145,7 @@ class demo(QMainWindow):
         self.userIDDemo=userID
         client = GetDataFromServer()
         client.connect()
+        client.username=userID
         lstMusic = client.sendSignal("GET_MUSIC_LIST")
         self.addDataToWidget(lstMusic)
        

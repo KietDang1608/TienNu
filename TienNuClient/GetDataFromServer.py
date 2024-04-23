@@ -7,6 +7,7 @@ class GetDataFromServer():
     port = 3306
     def __init__(self):
         self.socket = None
+        self.username=""
     def connect(self):
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
