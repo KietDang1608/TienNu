@@ -187,17 +187,11 @@ class demo(QMainWindow):
         self.userIDDemo=userID
         client = GetDataFromServer()
         client.connect()
-<<<<<<< HEAD
-        client.username=userID
-        lstMusic = client.sendSignal("GET_MUSIC_LIST")
-        self.addDataToWidget(lstMusic)
-=======
         self.lstMusic = client.sendSignal("GET_MUSIC_LIST")
         self.addDataToWidget(self.lstMusic)
 
     def setPassword(self,passw):
         self.userPassword=passw
->>>>>>> e8ffc0af3a7a86a43446aa757e8badfa510269d8
        
     def setName(self,name):
         self.name=name
