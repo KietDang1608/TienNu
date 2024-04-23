@@ -1,8 +1,8 @@
 from PlaylistDAO import *
 class PlaylistBUS:
     def __init__(self):
-        dao = PlaylistDAO()
-        self.lstPlaylist = dao.readData()
+        self.dao = PlaylistDAO()
+        self.lstPlaylist = self.dao.readData()
     def getData(self):
         return self.lstPlaylist
     def getPLaylistByUserID(self,userID:str):
@@ -11,7 +11,8 @@ class PlaylistBUS:
             if item.userID == userID:
                 lst.append(item)
         return lst
-
+    def addData(self,id,userID,title):
+        self.dao.addData(id,userID,title)
         
 class PlayListDetailBUS:
     def __init__(self):
@@ -29,5 +30,7 @@ class PlayListDetailBUS:
         return lst
     def addData(self,id,songid):
         self.dao.addData(id,songid)
+    def delData(self,id,songID):
+        self.dao.deleteData(id,songID)
             
         
