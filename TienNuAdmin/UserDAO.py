@@ -52,4 +52,22 @@ class UserDAO:
                     cursor.close()
             if connection.is_connected():
                 connection.close()
-                print("Đã đóng kết nối")        
+                print("Đã đóng kết nối")    
+
+    def updateUser(self, password:str,name:str,username:str):
+        try:
+            connection = Connect_DB.getConnection()
+            if connection is not None:
+                cursor = connection.cursor()
+                # Tạo câu lệnh SQL để cập nhật thông tin người dùng
+                sql = f"UPDATE user SET password = '{password}', name = '{name}' WHERE username = '{username}'"
+                cursor.execute(sql)
+                connection.commit()
+        except mysql.connector.Error as e:
+            print("Lỗi truy vấn:", e)
+        finally:
+            if 'cursor' in locals():
+                cursor.close()
+            if connection.is_connected():
+                connection.close()
+                print("Đã đóng kết nối")    
