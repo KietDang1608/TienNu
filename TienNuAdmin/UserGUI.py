@@ -122,6 +122,7 @@ class UserGUI(QWidget):
         self.addDataToTable(userBUS.readData())
         
         self.table.itemClicked.connect(self.setDataClicked)
+        self.addBtn.setVisible(False)
         
 
 

@@ -9,6 +9,12 @@ class NhacBUS():
         for music in self.lstNhac:
             if music.id == musicid:
                 return music
+    def addSong(self, song:Music):
+        MusicDAO.addData(song)
+    def updateSong(self,song:Music):
+        MusicDAO.editData(song)
+    def delData(self,id):
+        MusicDAO.delData(id)
     def findSongByID(self, data:str):
         
         lstFound = []

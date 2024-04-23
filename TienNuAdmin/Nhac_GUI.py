@@ -210,16 +210,32 @@ class Nhac_GUI(QWidget):
                 self.btnPlay.clicked.connect(self.playSong)
                 self.btnStop.clicked.connect(self.stopPlaySong)
                 self.btnMusic.clicked.connect(self.chooseSongFile)
+                self.updateBtn.clicked.connect(self.editSong)
+                self.deleteBtn.clicked.connect(self.delSong)
                 #----------Khoa textline
                 self.txtimg.setReadOnly(True)
                 self.txtmp3.setReadOnly(True)
-                
+                self.txtID.setReadOnly(True)
                 #---------------------------------------
                 musicBus = NhacBUS.NhacBUS()
                 
                 self.addDataToTable(musicBus.getData())
                 self.table.itemClicked.connect(self.setDataClicked)
+                
+                self.addBtn.clicked.connect(self.addSong)
+                self.refreshBtn.clicked.connect(self.reloadTable)
         
+        def editSong(self):
+                songid = self.txtID.text()
+                catID = str(self.cbCate.currentIndex()+1)
+                music = Music(songid,catID,self.txtName.text(),self.txtArtist.text(),self.txtimg.text(),self.txtmp3.text(),0)
+                bus = NhacBUS.NhacBUS()
+                bus.updateSong(music)
+                self.reloadTable()
+        def delSong(self):
+                bus = NhacBUS.NhacBUS()
+                bus.delData(self.txtID.text())
+                
         def retranslateUi(self):
                 self.label.setText( "ID :")
                 self.label_2.setText("CATEGORY:")
@@ -232,8 +248,35 @@ class Nhac_GUI(QWidget):
                 self.updateBtn.setText("UPDATE")
                 self.deleteBtn.setText( "DELETE")
                 self.refreshBtn.setText( "REFRESH")
-        def addDataToTable(self, lstMusic:list):
+        def reloadTable(self):
+                bus = NhacBUS.NhacBUS()
+                lstMusic= bus.getData()
+                self.table.clearContents()
+                self.table.setRowCount(0)
+                self.table.setColumnCount(0)
+                #Reset lai cb truong hop co du lieu category moi
+                self.setCBItems()
                 
+                self.table.setColumnCount(6)
+                lstHead = ['ID', 'CategoryID', 'Name', 'Artist', 'Imgsource','MP3_source']
+                self.table.setHorizontalHeaderLabels(lstHead)
+               
+                #bus = NhacBUS.NhacBUS()
+                row_count = len(lstMusic);
+                self.table.setRowCount(row_count)
+                row = 0;
+                for music in  lstMusic:
+                        self.table.setItem(row, 0,QTableWidgetItem(str(music.id)))
+                        self.table.setItem(row, 1,QTableWidgetItem(str(music.catID)))
+                        self.table.setItem(row, 2,QTableWidgetItem(str(music.name)))
+                        self.table.setItem(row, 3,QTableWidgetItem(str(music.artist)))
+                        self.table.setItem(row, 4,QTableWidgetItem(str(music.img)))
+                        self.table.setItem(row, 5,QTableWidgetItem(str(music.mp3)))
+                        row += 1
+        def addDataToTable(self, lstMusic:list):
+                self.table.clearContents()
+                self.table.setRowCount(0)
+                self.table.setColumnCount(0)
                 #Reset lai cb truong hop co du lieu category moi
                 self.setCBItems()
                 
@@ -345,6 +388,10 @@ class Nhac_GUI(QWidget):
                 # Show message box alert for file outside SongIMG folder
                                 QMessageBox.warning(self, "Warning", "Please select a file from the song folder.", QMessageBox.StandardButton.Ok)             
         def addSong(self):
-                song = Music()
+                bus= NhacBUS.NhacBUS()
+                song = Music(None,self.cbCate.currentIndex()+1,self.txtName.text(),self.txtArtist.text(),self.txtimg.text(),self.txtmp3.text(),0)
+                
+                bus.addSong(song)
+                self.addDataToTable(bus.getData())
                 
 

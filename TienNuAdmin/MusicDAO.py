@@ -39,5 +39,23 @@ def addData(music:Music):
     connection = Connect_DB.getConnection()
     if connection is not None:
         cursor = connection.cursor()
-        sql = "INSERT INTO music VALUE()"
-        cursor.execute
+        cursor.execute("INSERT INTO music(category,name,artist,img, file) VALUE(%s,%s,%s,%s,%s)",(music.catID,music.name,music.artist,music.img,music.mp3))
+        connection.commit()
+        cursor.close()
+        connection.close()
+def editData(music:Music):
+    connection = Connect_DB.getConnection()
+    if connection is not None:
+        cursor = connection.cursor()
+        cursor.execute("UPDATE music set category = %s, name = %s, artist = %s, img = %s, file = %s where id = %s",(music.catID,music.name,music.artist,music.img,music.mp3,music.id,))
+        connection.commit()
+        cursor.close()
+        connection.close()
+def delData(id):
+    connection = Connect_DB.getConnection()
+    if connection is not None:
+        cursor = connection.cursor()
+        cursor.execute("DELETE from music where id = %s",(id,))
+        connection.commit()
+        cursor.close()
+        connection.close()

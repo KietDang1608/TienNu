@@ -64,14 +64,14 @@ class Main_GUI(QMainWindow):
                 icon2.addPixmap(QtGui.QPixmap("TienNuAdmin\img/teamwork.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
                 self.btnUser.setIcon(icon2)
                 self.btnUser.setObjectName("btnUser")
-                self.btnslide = QPushButton(parent=self.leftMenuPn)
-                self.btnslide.setGeometry(QtCore.QRect(10, 320, 110, 30))
-                self.btnslide.setStyleSheet("background-color: #8785A2;\n"
-        "color: #F6F6F6;")
-                icon3 = QtGui.QIcon()
-                icon3.addPixmap(QtGui.QPixmap("TienNuAdmin\img/slider.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-                self.btnslide.setIcon(icon3)
-                self.btnslide.setObjectName("btnslide")
+        #         self.btnslide = QPushButton(parent=self.leftMenuPn)
+        #         self.btnslide.setGeometry(QtCore.QRect(10, 320, 110, 30))
+        #         self.btnslide.setStyleSheet("background-color: #8785A2;\n"
+        # "color: #F6F6F6;")
+        #         icon3 = QtGui.QIcon()
+        #         icon3.addPixmap(QtGui.QPixmap("TienNuAdmin\img/slider.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        #         self.btnslide.setIcon(icon3)
+        #         self.btnslide.setObjectName("btnslide")
                 self.btnServer = QPushButton(parent=self.leftMenuPn)
                 self.btnServer.setGeometry(QtCore.QRect(10, 370, 110, 30))
                 self.btnServer.setStyleSheet("background-color: #8785A2;\n"
@@ -116,9 +116,9 @@ class Main_GUI(QMainWindow):
                 self.usergui = UserGUI.UserGUI()
                 self.usergui.setObjectName("usergui")
                 self.pagesWidget.addWidget(self.usergui)
-                self.slideGUI = SlideGUI.SlideGUI()
-                self.slideGUI.setObjectName("slideGUI")
-                self.pagesWidget.addWidget(self.slideGUI)
+                # self.slideGUI = SlideGUI.SlideGUI()
+                # self.slideGUI.setObjectName("slideGUI")
+                # self.pagesWidget.addWidget(self.slideGUI)
                 self.serverGUI = ServerGUI()
                 self.serverGUI.setObjectName("serverGUI")
                 self.pagesWidget.addWidget(self.serverGUI)
@@ -127,7 +127,7 @@ class Main_GUI(QMainWindow):
                 self.btnMusic.clicked.connect(self.toMusic)
                 self.btnCategory.clicked.connect(self.toCat)
                 self.btnUser.clicked.connect(self.toUser)
-                self.btnslide.clicked.connect(self.toSlide)
+                # self.btnslide.clicked.connect(self.toSlide)
                 self.btnServer.clicked.connect(self.toServer)
                 #--------------------------------------------
 
@@ -138,7 +138,7 @@ class Main_GUI(QMainWindow):
                 self.btnMusic.setText( "Music")
                 self.btnCategory.setText("Categories")
                 self.btnUser.setText( "Users")
-                self.btnslide.setText( "Slides")
+                # self.btnslide.setText( "Slides")
                 self.btnServer.setText( "Server")
                 self.pageTitleLB.setText( "MUSICS MANAGEMENT")
         def toMusic(self):
@@ -150,9 +150,9 @@ class Main_GUI(QMainWindow):
         def toUser(self):
                 self.pageTitleLB.setText("USERS MANAGEMENT")
                 self.pagesWidget.setCurrentWidget(self.usergui)
-        def toSlide(self):
-                self.pageTitleLB.setText("SLIDE MANAGEMENT")
-                self.pagesWidget.setCurrentWidget(self.slideGUI)
+        # def toSlide(self):
+        #         self.pageTitleLB.setText("SLIDE MANAGEMENT")
+        #         self.pagesWidget.setCurrentWidget(self.slideGUI)
         def toServer(self):
                 self.pageTitleLB.setText("SERVER MANAGEMENT")
                 self.pagesWidget.setCurrentWidget(self.serverGUI)

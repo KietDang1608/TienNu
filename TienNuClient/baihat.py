@@ -48,7 +48,7 @@ class baihat(QWidget):
         self.lblTacGia.setStyleSheet("color: rgb(255, 255, 255);")
         self.lblTacGia.setObjectName("lblTacGia")
         self.lblThoiLuong = QtWidgets.QLabel(parent=self.frame)
-        self.lblThoiLuong.setGeometry(QtCore.QRect(200, 30, 31, 16))
+        self.lblThoiLuong.setGeometry(QtCore.QRect(200, 30, 81, 16))
         self.lblThoiLuong.setStyleSheet("color: rgb(255, 255, 255);")
         self.lblThoiLuong.setObjectName("lblThoiLuong")
         self.btnPlay = QtWidgets.QPushButton(parent=self.frame)
@@ -96,7 +96,7 @@ class baihat(QWidget):
     def retranslateUi(self):
         self.lblTenBaiHat.setText("Tên Bài Hát : "+str(self.TenBaiHat))
         self.lblTacGia.setText("Tác Giả : "+str(self.TacGia))   
-        self.lblThoiLuong.setText("Lượt Nghe : "+str(self.ThoiLuong))
+        self.lblThoiLuong.setText("Lượt Nghe :"+str(self.ThoiLuong))
         self.lblHinh.setPixmap(QtGui.QPixmap.fromImage(QtGui.QImage("imgs/" + self.TenHinh)))
         self.lblHinh.setScaledContents(True)
 

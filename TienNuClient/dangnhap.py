@@ -76,6 +76,8 @@ class dangnhap(object):
                 userID=str(user['username'])
                 # print(userIDdemo)
                 dm.setUserID(user['username'])
+                dm.setPassword(user['password'])
+                dm.setName(user['name'])
                 dm.show()
                 self.tat()
                 return userID

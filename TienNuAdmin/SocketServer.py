@@ -12,7 +12,7 @@ class SocketServer(QThread):
     message_received = pyqtSignal(str)
     stopped =pyqtSignal()
     ip = 'localhost'#My LAN: 172.20.10.5
-    port = 8888
+    port = 3306
     def __init__(self):
         super().__init__()
         self.running = False
@@ -118,6 +118,7 @@ class SocketServer(QThread):
                 return
         PlDetailBus.addData(id,songid)
         self.clientSocket.sendall("1".encode())
+
     def removePlayList(self,id:str,songid:str):
         PlDetailBus = PlayListDetailBUS()  
         for pl in PlDetailBus.getPlayListByID(id):
@@ -134,12 +135,21 @@ class SocketServer(QThread):
                 return 
         pl.addData(id,userID,title)
         self.clientSocket.sendall("1".encode())
+
+    def updateUser(self,username:str,name:str,password:str):
+        userBUS = UserBUS()  
+    
+        userBUS.updateUser(password,name,username)
+        self.clientSocket.sendall("1".encode())
+        return
+        
+
     # Hàm nhận tín hiệu gửi từ client, xem tín hiệu là gì tùy trường hợp mà gửi lại dữ liệu tương ứng
     def getSignal(self):
         self.clientSocket, self.clientAddress = self.serverSocket.accept()
         print(f"Connection established with {self.clientAddress}")
         signal = self.clientSocket.recv(1024).decode("utf-8")
-        self.message = signal
+        self.message = self.clientAddress.__str__() + ": " + signal
         print( "Tin hieu tu client: ",signal)
         if (signal == "GET_CATEGORY_LIST"):
             self.sendCategoryLIST()
@@ -175,6 +185,7 @@ class SocketServer(QThread):
             userid = lstdata[0]
             songid=lstdata[1]
             self.removeToFAV(userid,songid)
+
         elif "REMOVE_TO_PLAYLIST" in signal:
             data = signal.replace("REMOVE_TO_PLAYLIST_","")
             lstdata = data.split("_")
@@ -188,6 +199,15 @@ class SocketServer(QThread):
             userid=lstdata[1]
             title=lstdata[2]
             self.addNewPlayList(id,userid,title)
+
+        elif "UPDATE_TO_USER" in signal:
+            data = signal.replace("UPDATE_TO_USER_","")
+            lstdata = data.split("_")
+            username=lstdata[0]
+            name=lstdata[1]
+            password=lstdata[2]
+            self.updateUser(username,name,password)
+
         elif signal ==  "GET_USER_LIST":
             self.sendUserLIST()
             

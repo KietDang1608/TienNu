@@ -37,6 +37,30 @@ def readData():
 def printData():
     for cat in readData():
         print(cat.__str__())
+def addData(cat:Category):
+    connection = Connect_DB.getConnection()
+    if connection is not None:
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO category(title) VALUE(%s)",(cat.title,))
+        connection.commit()
+        cursor.close()
+        connection.close()
+def editData(cat:Category):
+    connection = Connect_DB.getConnection()
+    if connection is not None:
+        cursor = connection.cursor()
+        cursor.execute("UPDATE category set title = %s where id = %s",(cat.title,cat.id,))
+        connection.commit()
+        cursor.close()
+        connection.close()
+def delData(cat:Category):
+    connection = Connect_DB.getConnection()
+    if connection is not None:
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM category where id = %s",(cat.id, ))
+        connection.commit()
+        cursor.close()
+        connection.close()
 def hello():
     print("hello")
 
