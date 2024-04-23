@@ -14,7 +14,7 @@ from GetDataFromServer import GetDataFromServer
 
 
 
-class baihat(QWidget):
+class baihat1(QWidget):
     def __init__(self,id,TenBaiHat,TacGia,ThoiLuong,TenHinh,mp3,userID):
         super().__init__()
         self.ID=id
@@ -69,7 +69,7 @@ class baihat(QWidget):
         self.btnPlayList.setIcon(icon1)
         self.btnPlayList.setIconSize(QtCore.QSize(50, 50))
         self.btnPlayList.setObjectName("btnPlayList")
-        self.btnPlayList.clicked.connect(self.sendshowToPlaylist)
+        self.btnPlayList.clicked.connect(self.sendRemovePlaylist)
         self.btnLike = QtWidgets.QPushButton(parent=self.frame)
         self.btnLike.setGeometry(QtCore.QRect(460, 10, 51, 61))
         self.btnLike.setText("")
@@ -120,35 +120,11 @@ class baihat(QWidget):
         client.connect()
         receive = client.sendAddToPlaylist("ADD_TO_FAVORITE_" + self.userID + "_" + self.ID)
         print(receive)
-    def sendshowToPlaylist(self):
+    def sendRemovePlaylist(self):
         client = GetDataFromServer()
         client.connect()
-        idPlaylist = client.sendSignal("GET_PLAYLIST_LIST_" +  self.userID)
-        # for i in idPlaylist :     
-        #     receive = client.sendAddToPlaylist("ADD_TO_PLAYLIST_" + str(i["id"]) + "_" + self.ID)
-        # print(receive)
-        # Hiển thị một hộp thoại thông báo
-        msgBox = QMessageBox()
-        msgBox.setWindowTitle("Thêm vào Danh sách phát")
-        msgBox.setFixedSize(1000, 900)  # Thiết lập kích thước cố định cho hộp thoại là 800x400 pixels
-        msgBox.setText("Thêm vào PlayList số : ")
-        for i in idPlaylist:          
-            ok_button = QPushButton(str(i['id']), self)
-            msgBox.addButton(ok_button, QMessageBox.ButtonRole.AcceptRole)
-            ok_button.clicked.connect(lambda _, id=i['id']: self.sendToPlaylist(id, msgBox))
-
-        # Kết nối sự kiện nhấp vào nút OK với phương thức xử lý
-
-        msgBox.exec()
-    def sendToPlaylist(self,id:str,msgBox):
-        client = GetDataFromServer()
-        client.connect()
-        idPlaylist = client.sendSignal("GET_PLAYLIST_LIST_" +  self.userID)
-        for i in idPlaylist :     
-            receive = client.sendAddToPlaylist("ADD_TO_PLAYLIST_" + str(id) + "_" + self.ID)
-            print(receive)
-        msgBox.close()
-
+        receive = client.sendRemovePlayList("REMOVE_TO_PLAYLIST_" + self.userID + "_" + self.ID)
+        print(receive)
     def sendRemoveToFavorite(self):
         client = GetDataFromServer()
         client.connect()
@@ -176,5 +152,5 @@ class baihat(QWidget):
             self.btnLike.setIcon(icon2)       
 
 if __name__ == "__main__":
-    bh=baihat()
+    bh=baihat1()
 

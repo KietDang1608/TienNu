@@ -39,6 +39,14 @@ class PlaylistDAO:
         else:
             print("Không thể kết nối đến cơ sở dữ liệu.")
 
+    def addData(self,id:str,userID,title:str):
+        connection = Connect_DB.getConnection()
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO playlist(id,userid,playlistTitle) value(%s,%s,%s)",(id,userID,title))
+        connection.commit()
+        cursor.close()
+        connection.close()
+
 class PlaylistDetailDAO:
     def __init__(self):
         pass
@@ -83,3 +91,11 @@ class PlaylistDetailDAO:
         connection.commit()
         cursor.close()
         connection.close()
+    def deleteData(self,id:str,songid:str):
+        connection = Connect_DB.getConnection()
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM playlistdetail where playlistID = %s and songID = %s ", (id,songid))
+        connection.commit()
+        cursor.close()
+        connection.close()
+        

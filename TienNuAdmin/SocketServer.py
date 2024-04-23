@@ -118,6 +118,22 @@ class SocketServer(QThread):
                 return
         PlDetailBus.addData(id,songid)
         self.clientSocket.sendall("1".encode())
+    def removePlayList(self,id:str,songid:str):
+        PlDetailBus = PlayListDetailBUS()  
+        for pl in PlDetailBus.getPlayListByID(id):
+            if songid == str(pl.songid):
+                PlDetailBus.delData(id,songid)
+                self.clientSocket.sendall("1".encode())
+                return
+        self.clientSocket.sendall("0".encode())
+    def addNewPlayList(self,id:str,userID,title:str):
+        pl = PlaylistBUS()
+        for fav in pl.getData():
+            if id == str(fav.id):
+                self.clientSocket.sendall("0".encode())
+                return 
+        pl.addData(id,userID,title)
+        self.clientSocket.sendall("1".encode())
     # Hàm nhận tín hiệu gửi từ client, xem tín hiệu là gì tùy trường hợp mà gửi lại dữ liệu tương ứng
     def getSignal(self):
         self.clientSocket, self.clientAddress = self.serverSocket.accept()
@@ -159,6 +175,19 @@ class SocketServer(QThread):
             userid = lstdata[0]
             songid=lstdata[1]
             self.removeToFAV(userid,songid)
+        elif "REMOVE_TO_PLAYLIST" in signal:
+            data = signal.replace("REMOVE_TO_PLAYLIST_","")
+            lstdata = data.split("_")
+            userid = lstdata[0]
+            songid=lstdata[1]
+            self.removePlayList(userid,songid)
+        elif "ADD_PLAYLIST" in signal:
+            data = signal.replace("ADD_PLAYLIST_","")
+            lstdata = data.split("_")
+            id = lstdata[0]
+            userid=lstdata[1]
+            title=lstdata[2]
+            self.addNewPlayList(id,userid,title)
         elif signal ==  "GET_USER_LIST":
             self.sendUserLIST()
             

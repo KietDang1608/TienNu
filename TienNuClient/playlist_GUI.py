@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 import pygame
 import baihat
+import playlists
 from GetDataFromServer import GetDataFromServer
 class playlist_GUI(QWidget):
     def __init__(self,userIDDemo):
@@ -21,6 +22,8 @@ class playlist_GUI(QWidget):
         self.setObjectName("Form")
         self.resize(611, 591)
         # self.addDataToWidget(playlist_BUS.getData())
+
+
         self.scrollArea = QtWidgets.QScrollArea(parent=self)
         self.scrollArea.setGeometry(QtCore.QRect(0, 0, 611, 591))
         self.scrollArea.setWidgetResizable(True)
@@ -35,7 +38,14 @@ class playlist_GUI(QWidget):
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        
+
+        self.btnAddPlaylist = QtWidgets.QPushButton(parent=self)
+        self.btnAddPlaylist.setGeometry(QtCore.QRect(10, 0, 75, 23))
+        self.btnAddPlaylist.setObjectName("btnAddPlaylist")
+        self.btnAddPlaylist.setText("Add Playlist")
+        self.btnAddPlaylist.setStyleSheet("background-color: #70bf73; color: white;")
+        self.btnAddPlaylist.clicked.connect(self.addPlayList)
+
         self.retranslateUi()
 
     def retranslateUi(self):
@@ -46,28 +56,58 @@ class playlist_GUI(QWidget):
         userIDDemoa = str(self.userIDDemo)  # Example user ID
         client = GetDataFromServer()
         client.connect()
-        lstMusic_playlist = client.sendSignal("GET_PLAYLIST_LIST_" + self.userIDDemo)
-        
-        print(lstMusic_playlist)
+        # lstMusic_playlist = client.sendSignal("GET_PLAYLIST_LIST_" + self.userIDDemo)
+        lst = client.sendSignal("GET_PLAYLIST_LIST_" + self.userIDDemo)
+        # print(lstMusic_playlist)
     
        
-        row=0
-        for playlist in lstMusic_playlist:
-            playlistID=str(playlist["id"])
+        # row=0
+        # for playlist in lstMusic_playlist:
+        #     playlistID=str(playlist["id"])
             
-            lstPlaylistDetail = client.sendSignal("GET_SONGS_OF_PLAYLIST_" + playlistID)
-            lstMusic = client.sendSignal("GET_MUSIC_LIST")
-            for playlistdetail in lstPlaylistDetail:
-                musicID=int(playlistdetail["songid"])
-                for music in lstMusic:
-                    if music["id"] == musicID:
-                         self.baihat=baihat.baihat(str(music["id"]),str(music["name"]),str(music["artist"]),str(music["luotNghe"]),str(music["img"]),str(music["mp3"]),self.userIDDemo)
-                         self.layout.addWidget(self.baihat,row,0)
-                         row+=1   
-                    
-            
-                    
+        #     lstPlaylistDetail = client.sendSignal("GET_SONGS_OF_PLAYLIST_" + playlistID)
+        #     lstMusic = client.sendSignal("GET_MUSIC_LIST")
+        #     for playlistdetail in lstPlaylistDetail:
+        #         musicID=int(playlistdetail["songid"])
+        #         for music in lstMusic:
+        #             if music["id"] == musicID:
+        #                  self.baihat=baihat.baihat(str(music["id"]),str(music["name"]),str(music["artist"]),str(music["luotNghe"]),str(music["img"]),str(music["mp3"]),self.userIDDemo)
+        #                  self.layout.addWidget(self.baihat,row,0)
+        #                  row+=1   
+        row =0
+        for pl in lst:
+            self.playlists = playlists.Ui_Form(str(pl["id"]),str(pl["title"]),str(pl["userID"]),self.layout)
+            self.layout.addWidget(self.playlists,row,0)
+            row+=1 
+    def addPlayList(self):
+        dialog = QDialog()
+        dialog.setWindowTitle("Thêm PlayList")
+        dialog.setFixedSize(500, 300)  
 
+        layout = QVBoxLayout(dialog)
+
+        label1 = QLabel("Mã PlayList: ")
+        layout.addWidget(label1)
+        lineEdit1 = QLineEdit()
+        layout.addWidget(lineEdit1)
+
+        label2 = QLabel("Tên PlayList: ")
+        layout.addWidget(label2)
+        lineEdit2 = QLineEdit()
+        layout.addWidget(lineEdit2)
+
+        # Thêm nút
+        button = QPushButton("Thêm")
+        button.clicked.connect(lambda: self.addPlaylistConfirmed(lineEdit2.text(), lineEdit1.text()))
+        layout.addWidget(button)
+
+        dialog.exec()
+
+    def addPlaylistConfirmed(self, tenPlaylist, maPlaylist):
+        client = GetDataFromServer()
+        client.connect()
+        lst = client.sendSignal("ADD_PLAYLIST_" + maPlaylist + "_" +self.userIDDemo + "_" +tenPlaylist)
+        
 
 
     # def addDataToWidget(self, lstPlaylist:list):
