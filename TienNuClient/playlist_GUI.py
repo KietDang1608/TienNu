@@ -82,14 +82,10 @@ class playlist_GUI(QWidget):
     def addPlayList(self):
         dialog = QDialog()
         dialog.setWindowTitle("Thêm PlayList")
-        dialog.setFixedSize(500, 300)  
+        dialog.setFixedSize(300, 150)  
 
         layout = QVBoxLayout(dialog)
 
-        label1 = QLabel("Mã PlayList: ")
-        layout.addWidget(label1)
-        lineEdit1 = QLineEdit()
-        layout.addWidget(lineEdit1)
 
         label2 = QLabel("Tên PlayList: ")
         layout.addWidget(label2)
@@ -98,15 +94,17 @@ class playlist_GUI(QWidget):
 
         # Thêm nút
         button = QPushButton("Thêm")
-        button.clicked.connect(lambda: self.addPlaylistConfirmed(lineEdit2.text(), lineEdit1.text()))
+        button.clicked.connect(lambda: self.addPlaylistConfirmed(lineEdit2.text(),dialog))
         layout.addWidget(button)
 
         dialog.exec()
+     
 
-    def addPlaylistConfirmed(self, tenPlaylist, maPlaylist):
+    def addPlaylistConfirmed(self, tenPlaylist,dialog):
         client = GetDataFromServer()
         client.connect()
-        lst = client.sendSignal("ADD_PLAYLIST_" + maPlaylist + "_" +self.userIDDemo + "_" +tenPlaylist)
+        lst = client.sendSignal("ADD_PLAYLIST_" +self.userIDDemo + "_" +tenPlaylist)
+        dialog.close()
         
 
 

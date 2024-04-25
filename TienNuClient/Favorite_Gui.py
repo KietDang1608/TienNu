@@ -30,11 +30,27 @@ class Favorite_GUI(QWidget):
         self.layout = QGridLayout()
         self.layout.setHorizontalSpacing(0)
         self.layout.setVerticalSpacing(0)
+        self.scrollArea = QtWidgets.QScrollArea(parent=self)
+        self.scrollArea.setGeometry(QtCore.QRect(0, 0, 611, 591))
+        self.scrollArea.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.scrollArea.setWidgetResizable(True)
+        # self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        
+
+        
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setFixedWidth(611)
+        self.scrollAreaWidgetContents.setFixedHeight(591)
+        
         self.scrollAreaWidgetContents.setLayout(self.layout)
-        self.getFavorite()
+    
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 609, 589))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+   
+        self.getFavorite()
+
         
         self.retranslateUi()
 
@@ -59,6 +75,8 @@ class Favorite_GUI(QWidget):
                     self.baihat=baihat.baihat(str(lst["id"]),str(lst["name"]),str(lst["artist"]),str(lst["luotNghe"]),str(lst["img"]),str(lst["mp3"]),self.userIDDemo)
                     self.layout.addWidget(self.baihat,row,0)
                     row+=1   
+        self.scrollAreaWidgetContents.setFixedHeight(80*(row+1))    
+            
                         
             
                     

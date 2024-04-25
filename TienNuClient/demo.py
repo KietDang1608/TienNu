@@ -125,6 +125,8 @@ class demo(QMainWindow):
         self.scrollArea.setWidgetResizable(True)
         # self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         
+
+        
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setFixedWidth(611)
@@ -139,7 +141,6 @@ class demo(QMainWindow):
         self.setCentralWidget(self.centralwidget)
         self.btnFind.clicked.connect(self.searchData)
         self.txtSearch.returnPressed.connect(self.searchData)
-        
         self.retranslateUi()
 
     def retranslateUi(self):
@@ -158,6 +159,7 @@ class demo(QMainWindow):
             print(self.userIDDemo)
             self.layout.addWidget(self.baihat,row,0)
             row+=1
+        self.scrollAreaWidgetContents.setFixedHeight(80*(row+1))
         
     def clearWidget(self):
         for i in reversed(range(self.layout.count())):

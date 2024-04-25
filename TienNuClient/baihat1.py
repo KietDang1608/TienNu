@@ -40,7 +40,7 @@ class baihat1(QWidget):
         
         self.lblHinh.setObjectName("lblHinh")
         self.lblTenBaiHat = QtWidgets.QLabel(parent=self.frame)
-        self.lblTenBaiHat.setGeometry(QtCore.QRect(70, 20, 111, 16))
+        self.lblTenBaiHat.setGeometry(QtCore.QRect(70, 20, 151, 16))
         self.lblTenBaiHat.setStyleSheet("color: rgb(255, 255, 255);")
         self.lblTenBaiHat.setObjectName("lblTenBaiHat")
         self.lblTacGia = QtWidgets.QLabel(parent=self.frame)
@@ -48,24 +48,35 @@ class baihat1(QWidget):
         self.lblTacGia.setStyleSheet("color: rgb(255, 255, 255);")
         self.lblTacGia.setObjectName("lblTacGia")
         self.lblThoiLuong = QtWidgets.QLabel(parent=self.frame)
-        self.lblThoiLuong.setGeometry(QtCore.QRect(200, 30, 31, 16))
+        self.lblThoiLuong.setGeometry(QtCore.QRect(200, 50, 31, 16))
         self.lblThoiLuong.setStyleSheet("color: rgb(255, 255, 255);")
         self.lblThoiLuong.setObjectName("lblThoiLuong")
         self.btnPlay = QtWidgets.QPushButton(parent=self.frame)
         self.btnPlay.setGeometry(QtCore.QRect(310, 10, 51, 61))
         self.btnPlay.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("TienNuClient/imgs/icons8-play-button-circled-24.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("imgs/icons8-play-button-circled-24.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnPlay.setIcon(icon)
         self.btnPlay.setIconSize(QtCore.QSize(50, 50))
         self.btnPlay.setObjectName("btnPlay")
         self.btnPlay.clicked.connect(self.playSong)
         
+        self.btnStop = QtWidgets.QPushButton(parent=self.frame)
+        self.btnStop.setGeometry(QtCore.QRect(310, 10, 51, 61))
+        self.btnStop.setText("")
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("imgs/stop-button.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.btnStop.setIcon(icon2)
+        self.btnStop.setIconSize(QtCore.QSize(50, 50))
+        self.btnStop.setObjectName("btnStop")
+        self.btnStop.setVisible(False)
+        self.btnStop.clicked.connect(self.stopPlaySong)
+
         self.btnPlayList = QtWidgets.QPushButton(parent=self.frame)
         self.btnPlayList.setGeometry(QtCore.QRect(390, 10, 51, 61))
         self.btnPlayList.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("TienNuClient/imgs/icons8-playlist-30.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon1.addPixmap(QtGui.QPixmap("imgs/icons8-playlist-30.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnPlayList.setIcon(icon1)
         self.btnPlayList.setIconSize(QtCore.QSize(50, 50))
         self.btnPlayList.setObjectName("btnPlayList")
@@ -81,11 +92,11 @@ class baihat1(QWidget):
                 self.like=True
         if self.like :
             icon2 = QtGui.QIcon()
-            icon2.addPixmap(QtGui.QPixmap("TienNuClient/imgs/heart.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            icon2.addPixmap(QtGui.QPixmap("imgs/heart.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.btnLike.setIcon(icon2)            
         else :         
             icon2 = QtGui.QIcon()
-            icon2.addPixmap(QtGui.QPixmap("TienNuClient/imgs/icons8-favorite-24 (1).png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            icon2.addPixmap(QtGui.QPixmap("imgs/icons8-favorite-24 (1).png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.btnLike.setIcon(icon2)
         self.btnLike.clicked.connect(self.toggleFavorite)
         self.btnLike.setIconSize(QtCore.QSize(50, 50))
@@ -94,27 +105,25 @@ class baihat1(QWidget):
         self.retranslateUi()
 
     def retranslateUi(self):
-        self.lblTenBaiHat.setText("Tên Bài Hát : "+str(self.TenBaiHat))
-        self.lblTacGia.setText("Tác Giả : "+str(self.TacGia))   
-        self.lblThoiLuong.setText("Lượt Nghe : "+str(self.ThoiLuong))
-        self.lblHinh.setPixmap(QtGui.QPixmap.fromImage(QtGui.QImage("TienNuClient/imgs/" + self.TenHinh)))
+        self.lblTenBaiHat.setText(str(self.TenBaiHat))
+        self.lblTacGia.setText(str(self.TacGia))   
+        self.lblThoiLuong.setText(str(self.ThoiLuong))
+        self.lblHinh.setPixmap(QtGui.QPixmap.fromImage(QtGui.QImage("imgs/" + self.TenHinh)))
         self.lblHinh.setScaledContents(True)
 
     def playSong(self):
-                # self.btnStop.setVisible(True)
-                g = GetDataFromServer()
-                g.connect()
-                pygame.mixer.init()
-                try:
-            # # Load the song using pygame mixer
-                        g.playSongFromServer(self.ID)
-                except Exception as e:
-                        QMessageBox.information(None, "Thông báo!", "Lỗi khi phát nhạc!")
-                        # self.btnStop.setVisible(False)
+        self.btnStop.setVisible(True)
+        g = GetDataFromServer()
+        g.connect()
+        try:
+    # # Load the song using pygame mixer
+                g.playSongFromServer(self.ID)
+        except Exception as e:
+                QMessageBox.information(None, "Thông báo!", "Lỗi khi phát nhạc!")
+                self.btnStop.setVisible(False)
     def stopPlaySong(self):
-                # self.btnStop.setVisible(False)
-                pygame.mixer.stop()
-                self.btnPlay.clicked.connect(self.playSong)
+                self.btnStop.setVisible(False)
+                pygame.mixer.music.stop()
     def sendAddToFavorite(self):
         client = GetDataFromServer()
         client.connect()

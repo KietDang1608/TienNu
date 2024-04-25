@@ -38,7 +38,7 @@ class dangnhap(object):
         self.txtPassword = QtWidgets.QLineEdit(parent=Form)
         self.txtPassword.setGeometry(QtCore.QRect(100, 110, 231, 22))
         self.txtPassword.setObjectName("txtPassword")
-
+        self.txtPassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
         dm = demo.demo()
         lstUser =[]
         try:
