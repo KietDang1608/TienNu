@@ -168,15 +168,16 @@ class demo(QMainWindow):
     def searchData(self):
         item = self.cbFind.currentIndex()
         data = self.txtSearch.text()
+
         lstFound = []
         for music in self.lstMusic:
             if item == 0: #Tim theo id
                 lstFound=self.lstMusic
             elif item == 1:#Tim theo ten nhac
-                if data == str(music["name"]):
+                if data.lower() in str(music["name"]).lower():
                     lstFound.append(music)
             else:#Tim theo ten tac gia
-                if data == str(music["artist"]):
+                if data.lower() in str(music["artist"]).lower():
                     lstFound.append(music)
         self.clearWidget()
         self.addDataToWidget(lstFound)
