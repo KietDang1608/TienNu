@@ -4,6 +4,7 @@ from FavoriteBUS import FavoriteBUS
 from PlaylistBUS import PlaylistBUS,PlayListDetailBUS
 from PyQt6.QtCore import QThread,pyqtSignal
 from UserBUS import UserBUS
+import base64
 import pygame
 import socket
 import json
@@ -47,7 +48,14 @@ class SocketServer(QThread):
             print("Server stopped")
         except Exception as e:
             print(f"Error stopping server: {e}")
-    
+    def imageToByte(self,imageFile):
+        filePath = "TienNuAdmin/SongIMG/"+imageFile
+        absolutePath = os.path.abspath(filePath)
+        with open(absolutePath, 'rb') as image_file:
+            image_bytes = image_file.read()
+        base64_string = base64.b64encode(image_bytes).decode('utf-8')
+
+        return base64_string
     def sendCategoryLIST(self):
         categoryBUS = Category_BUS()
         datadict = [vars(obj) for obj in categoryBUS.getData()]
@@ -63,6 +71,8 @@ class SocketServer(QThread):
         self.clientSocket.sendall(jsonData.encode())
     def sendMusicLIST(self):
         musicBUS = NhacBUS()
+        for music in musicBUS.getData():
+            music.img = self.imageToByte(music.img)
         datadict = [vars(obj) for obj in musicBUS.getData()]
         jsonData = json.dumps(datadict)
         self.clientSocket.sendall(jsonData.encode())

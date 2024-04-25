@@ -1,5 +1,5 @@
 class Music:
-    def __init__(self, id:str, catID:str, name:str, artist:str, img:str, mp3:str,luotNghe=0):
+    def __init__(self, id:str, catID:str, name:str, artist:str, img, mp3:str,luotNghe=0):
         self.id = id
         self.catID = catID
         self.name = name
