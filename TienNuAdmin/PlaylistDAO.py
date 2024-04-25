@@ -39,10 +39,10 @@ class PlaylistDAO:
         else:
             print("Không thể kết nối đến cơ sở dữ liệu.")
 
-    def addData(self,id:str,userID,title:str):
+    def addData(self,userID,title:str):
         connection = Connect_DB.getConnection()
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO playlist(id,userid,playlistTitle) value(%s,%s,%s)",(id,userID,title))
+        cursor.execute("INSERT INTO playlist(userid,playlistTitle) value(%s,%s)",(userID,title))
         connection.commit()
         cursor.close()
         connection.close()

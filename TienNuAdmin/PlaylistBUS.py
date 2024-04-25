@@ -11,8 +11,8 @@ class PlaylistBUS:
             if item.userID == userID:
                 lst.append(item)
         return lst
-    def addData(self,id,userID,title):
-        self.dao.addData(id,userID,title)
+    def addData(self,userID,title):
+        self.dao.addData(userID,title)
         
 class PlayListDetailBUS:
     def __init__(self):

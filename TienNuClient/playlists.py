@@ -37,7 +37,7 @@ class Ui_Form(QWidget):
         self.lblHinh.setText("")        
         self.lblHinh.setObjectName("lblHinh")
         self.lblTenBaiHat = QtWidgets.QLabel(parent=self.frame)
-        self.lblTenBaiHat.setGeometry(QtCore.QRect(70, 20, 111, 16))
+        self.lblTenBaiHat.setGeometry(QtCore.QRect(70, 20, 251, 16))
         self.lblTenBaiHat.setStyleSheet("color: rgb(255, 255, 255);")
         self.lblTenBaiHat.setObjectName("lblTenBaiHat")
         self.lblmaPlaylist = QtWidgets.QLabel(parent=self.frame)
