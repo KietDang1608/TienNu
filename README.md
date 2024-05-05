@@ -52,21 +52,12 @@ MySQL Connector
 ## Authors
 
   - **Kiet Dang** - *Provided README Template* -
-    [PurpleBooth](https://github.com/PurpleBooth)
+    [kietdang1608](https://kietdang1608.github.io/MyPortfolio/)
 
-See also the list of
-[contributors](https://github.com/PurpleBooth/a-good-readme-template/contributors)
-who participated in this project.
 
 ## License
 
-This project is licensed under the [CC0 1.0 Universal](LICENSE.md)
-Creative Commons License - see the [LICENSE.md](LICENSE.md) file for
-details
+No License for this opened source software 😘
 
-## Acknowledgments
 
-  - Hat tip to anyone whose code is used
-  - Inspiration
-  - etc
 
