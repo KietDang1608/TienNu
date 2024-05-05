@@ -13,8 +13,8 @@ from PyQt6.QtCore import *
 import pygame
 from GetDataFromServer import GetDataFromServer
 import base64
-
-
+import os
+print(os.path.abspath("imgs/icons8-favorite-24 (1).png"))
 class baihat(QWidget):
     def __init__(self,id,TenBaiHat,TacGia,ThoiLuong,TenHinh,mp3,userID):
         super().__init__()
@@ -56,7 +56,7 @@ class baihat(QWidget):
         self.btnPlay.setGeometry(QtCore.QRect(310, 10, 51, 61))
         self.btnPlay.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("imgs/icons8-play-button-circled-24.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/icons8-play-button-circled-24.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnPlay.setIcon(icon)
         self.btnPlay.setIconSize(QtCore.QSize(50, 50))
         self.btnPlay.setObjectName("btnPlay")
@@ -66,7 +66,7 @@ class baihat(QWidget):
         self.btnStop.setGeometry(QtCore.QRect(310, 10, 51, 61))
         self.btnStop.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("imgs/stop-button.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon2.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/stop-button.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnStop.setIcon(icon2)
         self.btnStop.setIconSize(QtCore.QSize(50, 50))
         self.btnStop.setObjectName("btnStop")
@@ -77,7 +77,7 @@ class baihat(QWidget):
         self.btnPlayList.setGeometry(QtCore.QRect(390, 10, 51, 61))
         self.btnPlayList.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("imgs/icons8-playlist-30.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon1.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/icons8-playlist-30.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnPlayList.setIcon(icon1)
         self.btnPlayList.setIconSize(QtCore.QSize(50, 50))
         self.btnPlayList.setObjectName("btnPlayList")
@@ -93,11 +93,11 @@ class baihat(QWidget):
                 self.like=True
         if self.like :
             icon2 = QtGui.QIcon()
-            icon2.addPixmap(QtGui.QPixmap("imgs/heart.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            icon2.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/heart.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.btnLike.setIcon(icon2)            
         else :         
             icon2 = QtGui.QIcon()
-            icon2.addPixmap(QtGui.QPixmap("imgs/icons8-favorite-24 (1).png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            icon2.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/icons8-favorite-24 (1).png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.btnLike.setIcon(icon2)
         self.btnLike.clicked.connect(self.toggleFavorite)
         self.btnLike.setIconSize(QtCore.QSize(50, 50))
@@ -184,7 +184,7 @@ class baihat(QWidget):
             self.like = False
             # Thay đổi biểu tượng của nút yêu thích
             icon2 = QtGui.QIcon()
-            icon2.addPixmap(QtGui.QPixmap("imgs/icons8-favorite-24 (1).png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            icon2.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/icons8-favorite-24 (1).png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.btnLike.setIcon(icon2)
         else:
             # Nếu chưa thích, gửi yêu cầu thêm vào danh sách yêu thích
@@ -193,7 +193,7 @@ class baihat(QWidget):
             self.like = True
             # Thay đổi biểu tượng của nút yêu thích
             icon2 = QtGui.QIcon()
-            icon2.addPixmap(QtGui.QPixmap("imgs/heart.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            icon2.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/heart.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.btnLike.setIcon(icon2)       
 
 if __name__ == "__main__":

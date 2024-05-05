@@ -145,8 +145,8 @@ class demo(QMainWindow):
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("MainWindow", "Chị Đẹp MP3"))
-        self.appName.setText(_translate("MainWindow", "Chị Đẹp MP3"))
+        self.setWindowTitle(_translate("MainWindow", "TIENNU MP3"))
+        self.appName.setText(_translate("MainWindow", "TIENNU MP3"))
         self.btnTrangChu.setText(_translate("MainWindow", "Trang chủ"))
         self.btnPlayList.setText(_translate("MainWindow", "PlayList"))
         self.btnYeuThich.setText(_translate("MainWindow", "Yêu thích"))
