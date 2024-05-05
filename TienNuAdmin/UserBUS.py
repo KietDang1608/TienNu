@@ -6,8 +6,8 @@ class UserBUS:
         self.lstUser = self.userDAO.readData()
     def readData(self):
         return self.lstUser
-    def addData(self,user:User):
-        self.userDAO.addData(user)
+    def addData(self,username,password,name):
+        self.userDAO.addData(username,password,name)
     def updateUser(self,password,name,username):
         self.userDAO.updateUser(password,name,username)
     def getUserByID(self,username:str):

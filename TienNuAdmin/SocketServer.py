@@ -4,6 +4,7 @@ from FavoriteBUS import FavoriteBUS
 from PlaylistBUS import PlaylistBUS,PlayListDetailBUS
 from PyQt6.QtCore import QThread,pyqtSignal
 from UserBUS import UserBUS
+import User
 import base64
 import pygame
 import socket
@@ -152,7 +153,16 @@ class SocketServer(QThread):
         userBUS.updateUser(password,name,username)
         self.clientSocket.sendall("1".encode())
         return
-        
+
+    def addUser(self,username:str,name:str,password:str):
+        userBUS = UserBUS() 
+        for us in userBUS.readData():
+            if username == str(us.username):
+                self.clientSocket.sendall("0".encode())
+                return 
+        userBUS.addData(username,password,name)
+        self.clientSocket.sendall("1".encode())
+        return 
 
     # Hàm nhận tín hiệu gửi từ client, xem tín hiệu là gì tùy trường hợp mà gửi lại dữ liệu tương ứng
     def getSignal(self):
@@ -225,6 +235,15 @@ class SocketServer(QThread):
             name=lstdata[1]
             password=lstdata[2]
             self.updateUser(username,name,password)
+        
+        elif "ADD_TO_USER" in signal:
+            data = signal.replace("ADD_TO_USER_","")
+            self.message_received.emit(self.message)
+            lstdata = data.split("_")
+            username=lstdata[0]
+            name=lstdata[1]
+            password=lstdata[2]
+            self.addUser(username,name,password)
         elif "logged" in signal:
             self.message_received.emit(self.message)
         elif signal ==  "GET_USER_LIST":

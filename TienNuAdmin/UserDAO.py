@@ -1,6 +1,7 @@
 import Connect_DB
 from User import User
 import mysql.connector
+from datetime import datetime
 class UserDAO:
     def __init__(self):
         pass
@@ -37,12 +38,14 @@ class UserDAO:
                 return lstUser
         else:
             print("Không thể kết nối đến cơ sở dữ liệu.")
-    def addData(self, user:User):
+    def addData(self, username:str,password:str,name:str):
+        ngay_hien_tai = datetime.now()
+        datecreate= ngay_hien_tai.strftime('%Y-%m-%d')
         try:
             connection = Connect_DB.getConnection()
             if connection is not None:
                 cursor = connection.cursor()
-                sql = f"INSERT into user value({user.username},{user.password},{user.name},{user.datecreate})"
+                sql = f"INSERT into user value('{username}','{password}','{name}','{datecreate}')"
                 cursor.execute(sql)
                 connection.commit()
         except mysql.connector.Error as e:
