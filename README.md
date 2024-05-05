@@ -44,7 +44,7 @@ MySQL Connector
 
 ## Contributing
 
-  - [Kiet Dang]([https://kietdang1608.github.io/MyPortfolio/](https://www.overleaf.com/read/wqfczptvhksv#bf7bbf))
+  - [Kiet Dang]([https://kietdang1608.github.io/MyPortfolio/](https://www.overleaf.com/read/wqfczptvhksv#bf7bbf)
   - [Tuan Dat](https://axy888.github.io/test-cv/)
   - [Minh Huu](https://axy888.github.io/test-cv/)
 
