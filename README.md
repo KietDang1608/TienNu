@@ -1,9 +1,6 @@
-# Project Title
+# TienNu - Music streaming app
 
-One Paragraph of the project description
-
-Initially appeared on
-[gist](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2). But the page cannot open anymore so that is why I have moved it here.
+The TienNu online music streaming app is a software that allows users to access and enjoy music via the internet. Unlike downloading and storing music on a device, an online music streaming app uses streaming technology to transmit audio from a server to a client device in real time. This way, users can listen to music anytime, anywhere, without needing to use storage space.
 
 ## Getting Started
 
@@ -13,67 +10,48 @@ for notes on deploying the project on a live system.
 
 ### Prerequisites
 
-Requirements for the software and other tools to build, test and push 
-- [Example 1](https://www.example.com)
-- [Example 2](https://www.example.com)
+Requirements for the software and other tools to build
+- ![Python version](https://img.shields.io/badge/python-3.8+-brightgreen)
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development
-environment running
+Install these library
 
-Say what the step will be
+PyQt6
 
-    Give the example
+    pip install pyqt6
 
-And repeat
+Pillow
 
-    until finished
+    pip install pillow
 
-End with an example of getting some data out of the system or using it
-for a little demo
+Pygame
+
+    pip install pygame
+
+MySQL Connector
+
+    pip install mysql-connector-python
+
+
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+- For running App Server: run file `Main_GUI.py` in folder `TienNuAdmin`
+- For running App CLient: run file `dangnhap.py` in folder `TienNuClient`
+ > **note**: Must run the server in appserver first
 
-### Sample Tests
-
-Explain what these tests test and why
-
-    Give an example
-
-### Style test
-
-Checks if the best practices and the right coding style has been used.
-
-    Give an example
-
-## Deployment
-
-Add additional notes to deploy this on a live system
-
-## Built With
-
-  - [Contributor Covenant](https://www.contributor-covenant.org/) - Used
-    for the Code of Conduct
-  - [Creative Commons](https://creativecommons.org/) - Used to choose
-    the license
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code
-of conduct, and the process for submitting pull requests to us.
+  - [Kiet Dang](https://kietdang1608.github.io/MyPortfolio/)
+  - [Tuan Dat](https://axy888.github.io/test-cv/)
+  - [Minh Huu](https://axy888.github.io/test-cv/)
 
-## Versioning
-
-We use [Semantic Versioning](http://semver.org/) for versioning. For the versions
-available, see the [tags on this
-repository](https://github.com/PurpleBooth/a-good-readme-template/tags).
 
 ## Authors
 
-  - **Billie Thompson** - *Provided README Template* -
+  - **Kiet Dang** - *Provided README Template* -
     [PurpleBooth](https://github.com/PurpleBooth)
 
 See also the list of
