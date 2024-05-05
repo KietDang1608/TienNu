@@ -63,7 +63,7 @@ class demo(QMainWindow):
         self.btnFind.setText("")
         self.btnFind.setStyleSheet("background-color: white;")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("TienNuClient/imgs/search.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon3.addPixmap(QtGui.QPixmap("imgs/search.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnFind.setIcon(icon3)
         self.btnFind.setObjectName("btnFind")
         self.cbFind = QtWidgets.QComboBox(parent=self.menuPanel)
