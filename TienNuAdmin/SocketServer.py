@@ -137,13 +137,13 @@ class SocketServer(QThread):
                 self.clientSocket.sendall("1".encode())
                 return
         self.clientSocket.sendall("0".encode())
-    def addNewPlayList(self,id:str,userID,title:str):
+    def addNewPlayList(self,userID,title:str):
         pl = PlaylistBUS()
         for fav in pl.getData():
             if id == str(fav.id):
                 self.clientSocket.sendall("0".encode())
                 return 
-        pl.addData(id,userID,title)
+        pl.addData(userID,title)
         self.clientSocket.sendall("1".encode())
 
     def updateUser(self,username:str,name:str,password:str):
@@ -212,10 +212,9 @@ class SocketServer(QThread):
             data = signal.replace("ADD_PLAYLIST_","")
             self.message_received.emit(self.message)
             lstdata = data.split("_")
-            id = lstdata[0]
-            userid=lstdata[1]
-            title=lstdata[2]
-            self.addNewPlayList(id,userid,title)
+            userid=lstdata[0]
+            title=lstdata[1]
+            self.addNewPlayList(userid,title)
 
         elif "UPDATE_TO_USER" in signal:
             data = signal.replace("UPDATE_TO_USER_","")
