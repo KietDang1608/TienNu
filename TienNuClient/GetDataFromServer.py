@@ -115,6 +115,22 @@ class GetDataFromServer():
         except Exception as e:
             print(f"Error sending signal: {e}")
 
+    def sendAddUser(self,signal):
+
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.ip, self.port))
+        try:
+            if self.socket:
+                self.socket.sendall(signal.encode())
+                print(f"Signal {signal} sent successfully!")
+                received = self.socket.recv(1024)
+                received = received.decode("utf-8")
+                return received
+            else:
+                print("Socket connection not established.")
+        except Exception as e:
+            print(f"Error sending signal: {e}")
+
     def sendAddNewPlayList(self,signal):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.ip, self.port))
@@ -154,7 +170,7 @@ class GetDataFromServer():
                 print("Socket connection not established.")
         except Exception as e:
             print(f"Error sending signal: {e}")
-    def playSongFromServer(self,songid:str):
+    def playSongFromServer(self,songid:str,current_position):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.ip, self.port))
         signal = "PLAY_SONG_" + songid
@@ -176,9 +192,10 @@ class GetDataFromServer():
         pygame.mixer.music.load(temp_audio_file)
 
         # Play the loaded music
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(start=current_position)
 
         # # Wait for the music to finish playing
         # while pygame.mixer.music.get_busy():
         #     pygame.time.Clock().tick(10)
-        
+    def pauseSongFromServer(self):
+        pygame.mixer.music.pause()

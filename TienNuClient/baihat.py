@@ -24,8 +24,12 @@ class baihat(QWidget):
         self.ThoiLuong=ThoiLuong
         self.TenHinh=TenHinh
         self.mp3=mp3
+        self.playing = False
+        self.paused = False
+        self.current_position = 0
         self.userID=userID
         self.like =False
+        
         self.setUi()
     def setUi(self):
         self.resize(585, 94)
@@ -56,6 +60,7 @@ class baihat(QWidget):
         self.btnPlay.setGeometry(QtCore.QRect(310, 10, 51, 61))
         self.btnPlay.setText("")
         icon = QtGui.QIcon()
+
         icon.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/icons8-play-button-circled-24.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnPlay.setIcon(icon)
         self.btnPlay.setIconSize(QtCore.QSize(50, 50))
@@ -66,17 +71,20 @@ class baihat(QWidget):
         self.btnStop.setGeometry(QtCore.QRect(310, 10, 51, 61))
         self.btnStop.setText("")
         icon2 = QtGui.QIcon()
+
         icon2.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/stop-button.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+
         self.btnStop.setIcon(icon2)
         self.btnStop.setIconSize(QtCore.QSize(50, 50))
         self.btnStop.setObjectName("btnStop")
         self.btnStop.setVisible(False)
-        self.btnStop.clicked.connect(self.stopPlaySong)
+        self.btnStop.clicked.connect(self.pause_song)
         
         self.btnPlayList = QtWidgets.QPushButton(parent=self.frame)
         self.btnPlayList.setGeometry(QtCore.QRect(390, 10, 51, 61))
         self.btnPlayList.setText("")
         icon1 = QtGui.QIcon()
+
         icon1.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/icons8-playlist-30.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnPlayList.setIcon(icon1)
         self.btnPlayList.setIconSize(QtCore.QSize(50, 50))
@@ -93,6 +101,7 @@ class baihat(QWidget):
                 self.like=True
         if self.like :
             icon2 = QtGui.QIcon()
+
             icon2.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/heart.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.btnLike.setIcon(icon2)            
         else :         
@@ -128,14 +137,29 @@ class baihat(QWidget):
         g = GetDataFromServer()
         g.connect()
         try:
+                if self.playing and self.paused: 
+                    self.btnStop.setVisible(True) # Nếu đang phát nhạc và đã tạm dừng
+                    pygame.mixer.music.unpause()  # Tiếp tục phát nhạc
+                    self.paused = False
+                else:
+                    if not self.playing:  # Nếu chưa từng phát nhạc từ trước
+                            g.playSongFromServer(self.ID,self.current_position)  # Phát nhạc từ đầu
+                            self.playing = True
+                    else:  # Nếu đã từng phát nhạc từ trước
+                        g.playSongFromServer(self.ID,self.current_position)  # Phát nhạc từ vị trí dừng
+                        self.paused = False
+                        self.current_position = 0
     # # Load the song using pygame mixer
-                g.playSongFromServer(self.ID)
+                
         except Exception as e:
                 QMessageBox.information(None, "Thông báo!", "Lỗi khi phát nhạc!")
                 self.btnStop.setVisible(False)
-    def stopPlaySong(self):
-                self.btnStop.setVisible(False)
-                pygame.mixer.music.stop()
+    def pause_song(self):
+                self.btnStop.setVisible(False)  # Ẩn nút dừng
+                if self.playing and not self.paused:
+                        pygame.mixer.music.pause()
+                        self.paused = True
+                        self.current_position = pygame.mixer.music.get_pos() / 1000
                 
     def sendAddToFavorite(self):
         client = GetDataFromServer()
@@ -184,7 +208,9 @@ class baihat(QWidget):
             self.like = False
             # Thay đổi biểu tượng của nút yêu thích
             icon2 = QtGui.QIcon()
+
             icon2.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/icons8-favorite-24 (1).png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+
             self.btnLike.setIcon(icon2)
         else:
             # Nếu chưa thích, gửi yêu cầu thêm vào danh sách yêu thích
@@ -193,7 +219,9 @@ class baihat(QWidget):
             self.like = True
             # Thay đổi biểu tượng của nút yêu thích
             icon2 = QtGui.QIcon()
+
             icon2.addPixmap(QtGui.QPixmap(os.path.abspath("imgs/heart.png")), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+
             self.btnLike.setIcon(icon2)       
 
 if __name__ == "__main__":

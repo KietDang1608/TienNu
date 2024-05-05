@@ -11,6 +11,9 @@ from Category_BUS import Category_BUS
 class Nhac_GUI(QWidget):
         def __init__(self):
                 super().__init__()
+                self.playing = False
+                self.paused = False
+                self.current_position = 0
                 self.initUI()
         def initUI(self):
                 self.resize(670, 550)
@@ -207,8 +210,8 @@ class Nhac_GUI(QWidget):
                 self.btnFind.clicked.connect(self.searchData)
                 
                 self.txtFind.returnPressed.connect(self.searchData)
-                self.btnPlay.clicked.connect(self.playSong)
-                self.btnStop.clicked.connect(self.stopPlaySong)
+                self.btnPlay.clicked.connect(self.play_song)
+                self.btnStop.clicked.connect(self.pause_song)
                 self.btnMusic.clicked.connect(self.chooseSongFile)
                 self.updateBtn.clicked.connect(self.editSong)
                 self.deleteBtn.clicked.connect(self.delSong)
@@ -353,22 +356,42 @@ class Nhac_GUI(QWidget):
                 else:#Tim theo ten tac gia
                         lstFound = nhacbus.findSongByArtist(data)
                 self.addDataToTable(lstFound)
-        def playSong(self):
-                self.btnStop.setVisible(True)
+        def play_song(self):
+                
                 pygame.mixer.init()
-
                 songPath = "TienNuAdmin/song/"+ self.txtmp3.text()
-                pygame.mixer.stop()
                 try:
-            # Load the song using pygame mixer
-                        song = pygame.mixer.Sound(songPath)
-                        song.play()
+                        if self.playing and self.paused: 
+                                self.btnStop.setVisible(True) # Nếu đang phát nhạc và đã tạm dừng
+                                pygame.mixer.music.unpause()  # Tiếp tục phát nhạc
+                                self.paused = False
+                        else:  # Nếu không đang phát nhạc hoặc đã dừng
+                                self.btnStop.setVisible(True)  # Hiển thị nút dừng
+                                pygame.mixer.music.stop()  # Dừng nhạc nếu đang phát
+                                pygame.mixer.music.load(songPath)  # Load bài hát
+                                if not self.playing:  # Nếu chưa từng phát nhạc từ trước
+                                        pygame.mixer.music.play()  # Phát nhạc từ đầu
+                                        self.playing = True
+                                else:  # Nếu đã từng phát nhạc từ trước
+                                        pygame.mixer.music.play(start=self.current_position)  # Phát nhạc từ vị trí dừng
+                                        self.paused = False
+                                        self.current_position = 0
                 except Exception as e:
                         QMessageBox.information(None, "Thông báo!", "Lỗi khi phát nhạc!")
-                        self.btnStop.setVisible(False)
-        def stopPlaySong(self):
-                self.btnStop.setVisible(False)
-                pygame.mixer.stop()
+
+        def stop_play_song(self):
+                
+                pygame.mixer.music.stop()  # Dừng nhạc
+                self.playing = False
+                self.paused = False
+
+        def pause_song(self):
+                self.btnStop.setVisible(False)  # Ẩn nút dừng
+                if self.playing and not self.paused:
+                        pygame.mixer.music.pause()
+                        self.paused = True
+                        self.current_position = pygame.mixer.music.get_pos() / 1000 # Lưu lại vị trí hiện tại
+
         def chooseSongFile(self):
                 file_path, _ = QFileDialog.getOpenFileName(self, "Select File")
                 
@@ -379,10 +402,10 @@ class Nhac_GUI(QWidget):
                 # Check if the selected file is an image file
                                 _, file_extension = os.path.splitext(file_path)
                                 if file_extension.lower() in ('.mp3', '.wav'):
-                    # Set selected file path to QLineEdit
+                # Set selected file path to QLineEdit
                                         self.txtmp3.setText(os.path.basename(file_path))
                                 else:
-                    # Show message box alert for non-image file
+                # Show message box alert for non-image file
                                         QMessageBox.warning(self, "Warning", "Please select an MP3 or WAV file.", QMessageBox.StandardButton.Ok)
                         else:
                 # Show message box alert for file outside SongIMG folder
