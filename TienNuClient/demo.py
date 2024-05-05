@@ -63,7 +63,7 @@ class demo(QMainWindow):
         self.btnFind.setText("")
         self.btnFind.setStyleSheet("background-color: white;")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("TienNuClient/imgs/search.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon3.addPixmap(QtGui.QPixmap("imgs/search.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnFind.setIcon(icon3)
         self.btnFind.setObjectName("btnFind")
         self.cbFind = QtWidgets.QComboBox(parent=self.menuPanel)
@@ -145,8 +145,8 @@ class demo(QMainWindow):
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("MainWindow", "Chị Đẹp MP3"))
-        self.appName.setText(_translate("MainWindow", "Chị Đẹp MP3"))
+        self.setWindowTitle(_translate("MainWindow", "TIENNU MP3"))
+        self.appName.setText(_translate("MainWindow", "TIENNU MP3"))
         self.btnTrangChu.setText(_translate("MainWindow", "Trang chủ"))
         self.btnPlayList.setText(_translate("MainWindow", "PlayList"))
         self.btnYeuThich.setText(_translate("MainWindow", "Yêu thích"))
