@@ -46,7 +46,7 @@ MySQL Connector
 
   - [Kiet Dang](https://www.overleaf.com/read/wqfczptvhksv#bf7bbf)
   - [Tuan Dat](https://axy888.github.io/test-cv/)
-  - [Minh Huu](https://axy888.github.io/test-cv/)
+  - [Minh Huu](https://kuzo19032003.github.io/CV_MH/)
 
 
 ## Authors
