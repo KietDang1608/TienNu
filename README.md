@@ -2,6 +2,7 @@
 
 The TienNu online music streaming app is a software that allows users to access and enjoy music via the internet. Unlike downloading and storing music on a device, an online music streaming app uses streaming technology to transmit audio from a server to a client device in real time. This way, users can listen to music anytime, anywhere, without needing to use storage space.
 
+[Project Detail (PDF)](./TienNuMP3.pdf)
 ## Getting Started
 
 These instructions will give you a copy of the project up and running on
